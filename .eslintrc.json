@@ -1,0 +1,103 @@
+{
+    "env": {
+        "browser": true,
+        "node": true
+        // "es6": true
+    },
+    "extends": ["next/core-web-vitals", "plugin:import/typescript"],
+    "parser": "@babel/eslint-parser",
+    // parserOptions
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "plugins": ["react-hooks", "import", "prettier"],
+    "rules": {
+        "strict": 0,
+        "indent": [
+            "off",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "linebreak-style": 0,
+        "semi": ["error", "always"],
+        "global-require": "off",
+        "quotes": [
+            "error",
+            "double",
+            { "avoidEscape": true, "allowTemplateLiterals": true }
+        ],
+        "no-debugger": "off",
+        "no-console": "off",
+        // react
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
+        // for jsx
+        "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never",
+                "tsx": "never"
+            }
+        ],
+        "no-shadow": "off",
+        // "@typescript-eslint/no-shadow": ["error"],
+        "@typescript-eslint/no-unused-vars": ["off"],
+        "no-restricted-globals": ["off"],
+        "no-unused-vars": ["off"],
+
+        // disable the rule for all files
+        // "@typescript-eslint/explicit-function-return-type": [
+        //     "error",
+        //     {
+        //         "allowExpressions": true
+        //     }
+        // ],
+        // React hook
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+
+        // Prefer use of default export
+        "import/prefer-default-export": "off",
+
+        // Prop Types rules
+        "react/prop-types": "off",
+
+        // turn on errors for missing imports
+        "import/no-unresolved": "error"
+    },
+
+    "settings": {
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true,
+
+                "@components/*": "./src/components/",
+                "@components": "./src/components",
+                "@styles/*": "./src/styles/",
+                "@styles": "./src/styles",
+                "@config/*": "./src/config/",
+                "@config": "./src/config",
+                "@interfaces/*": "./src/interfaces/",
+                "@interfaces": "./src/interfaces",
+
+                "@icons/*": "components/elements/icons/*",
+                "@icons": "components/elements/icons"
+            }
+        }
+    }
+}

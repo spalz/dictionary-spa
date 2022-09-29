@@ -6,6 +6,7 @@ import { spacings, fonts, colors } from "@styles/vars";
 
 const HeaderAuth = () => {
     const { data: session } = useSession();
+
     if (session) {
         return (
             <SHeaderAuth>
@@ -22,11 +23,7 @@ const HeaderAuth = () => {
     }
     return (
         <SHeaderAuth>
-            <BaseButton
-                size="small"
-                style="primary"
-                onClick={() => signIn()}
-            >
+            <BaseButton size="small" style="primary" onClick={() => signIn()}>
                 Sign in
             </BaseButton>
         </SHeaderAuth>

@@ -29,12 +29,9 @@ const Home: NextPage = () => {
     );
 
     // console.group("next-auth session");
-    // console.log("session:", session);
+    // console.log("session:", session?.jwt);
+    // console.log("categories:", categories);
     // console.log("status:", status);
-    // console.log(
-    //     "NEXT_PUBLIC_NEXTAUTH_URL:",
-    //     process.env.NEXT_PUBLIC_NEXTAUTH_URL
-    // );
     // console.groupEnd();
 
     useEffect(() => {
@@ -52,13 +49,19 @@ const Home: NextPage = () => {
 
         fetch("https://admin.dictionary.dangercactus.io/api/tags?populate=*")
             .then((resp) => resp.json())
-            .then((result) => setTags(result.data))
+            .then((result) => setTags(result))
             .catch((error) => console.error(error));
-        fetch(
-            "https://admin.dictionary.dangercactus.io/api/categories?populate=*"
-        )
-            .then((resp) => resp.json())
-            .then((result) => setCategories(result.data))
+
+        axios
+            .get(
+                "https://admin.dictionary.dangercactus.io/api/categories?populate=*",
+                {
+                    headers: {
+                        Authorization: `Bearer ${session?.jwt}`,
+                    },
+                }
+            )
+            .then((result) => setCategories(result.data.data))
             .catch((error) => console.error(error));
     }, []);
 
@@ -190,7 +193,7 @@ const Home: NextPage = () => {
                     />
 
                     <SMain>
-                        <SMainTop>
+                        {/* <SMainTop>
                             {categorySelected === "all" ? (
                                 <Tags
                                     tags={tags}
@@ -206,7 +209,7 @@ const Home: NextPage = () => {
                                     Create Quiz
                                 </BaseButton>
                             </SActions>
-                        </SMainTop>
+                        </SMainTop> */}
                         <SWordsList>
                             {words?.map((item: WordProps) => {
                                 return (

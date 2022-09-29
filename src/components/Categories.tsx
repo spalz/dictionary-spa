@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CN from "classnames";
 
 import { CategoryProps } from "@interfaces";
-import { colors } from "@styles/vars";
+import { colors, spacings, fonts } from "@styles/vars";
 
 interface Categories {
     categories?: Array<CategoryProps>;
@@ -51,9 +51,11 @@ const Categories: React.FC<Categories> = ({
 };
 
 const SCategories = styled.div`
-    width: 200px;
+    width: 300px;
 `;
 const SCategoriesBlock = styled.ul`
+    position: sticky;
+    top: ${spacings.offset_20};
     margin: 0;
     padding: 0;
 `;
@@ -63,9 +65,15 @@ const SCategoryItem = styled.li`
     list-style: none;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.3em 0.5em;
+    /* justify-content: space-between; */
+    padding: 0.3em 0;
+    font-weight: ${fonts.fw_medium};
+    font-size: ${fonts.fs_20};
     cursor: pointer;
+    span {
+        color: ${colors.typo_secondary};
+        padding-left: 0.5em;
+    }
     &.add {
         color: ${colors?.typo_secondary};
         &:hover {
@@ -74,13 +82,13 @@ const SCategoryItem = styled.li`
     & + li {
         margin-top: 10px;
     }
-    background-color: ${colors?.bg_body_border};
+    /* background-color: ${colors?.bg_body_border}; */
     &:hover {
         color: ${colors.typo_link};
     }
     &.active {
-        background-color: ${colors?.bg_dark};
-        color: ${colors.typo_inverse};
+        /* background-color: ${colors?.bg_dark}; */
+        color: ${colors.typo_interactive};
         pointer-events: none;
     }
 `;

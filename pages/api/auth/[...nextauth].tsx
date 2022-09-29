@@ -1,40 +1,64 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-// import FacebookProvider from "next-auth/providers/facebook";
-// import GithubProvider from "next-auth/providers/github";
-// import TwitterProvider from "next-auth/providers/twitter";
-// import Auth0Provider from "next-auth/providers/auth0";
+import CredentialsProvider from "next-auth/providers/credentials";
+import axios from "axios";
 
 export const authOptions: NextAuthOptions = {
     providers: [
-        // FacebookProvider({
-        //     clientId: process.env.FACEBOOK_ID,
-        //     clientSecret: process.env.FACEBOOK_SECRET,
-        // }),
-        // GithubProvider({
-        //     clientId: process.env.GITHUB_ID,
-        //     clientSecret: process.env.GITHUB_SECRET,
-        // }),
-        GoogleProvider({
-            clientId: process.env.GOOGLE_ID ? process.env.GOOGLE_ID : "",
-            clientSecret: process.env.GOOGLE_SECRET
-                ? process.env.GOOGLE_SECRET
-                : "",
+        CredentialsProvider({
+            id: "login",
+            name: "Email",
+            credentials: {
+                identifier: {
+                    label: "Email",
+                    type: "text",
+                },
+                password: {
+                    label: "Password",
+                    type: "password",
+                },
+            },
+            async authorize(credentials) {
+                try {
+                    const response = await axios.post(
+                        `${process.env.NEXT_PUBLIC_STRSPI_API_URL}/api/auth/local`,
+                        {
+                            identifier: credentials?.identifier,
+                            password: credentials?.password,
+                        }
+                    );
+                    const user: any = {
+                        accessToken: response?.data.jwt,
+                        name: response?.data.user.username || "",
+                        email: response?.data.user.email || "",
+                        provider: response?.data.user.provider || "",
+                    };
+                    console.log(user);
+                    return user;
+                } catch (error) {
+                    console.log(error);
+                    return false;
+                }
+            },
         }),
-        // TwitterProvider({
-        //     clientId: process.env.TWITTER_ID,
-        //     clientSecret: process.env.TWITTER_SECRET,
-        // }),
     ],
-    theme: {
-        colorScheme: "light",
-    },
-    callbacks: {
-        async jwt({ token }) {
-            token.userRole = "admin";
-            return token;
-        },
-    },
+    // callbacks: {
+    //     async signIn(user, account) {
+    //         console.log(account);
+    //         const { accessToken, idToken } = account;
+    //     },
+    //     async jwt(token, user) {
+    //         if (user) {
+    //             const { accessToken } = user;
+    //             token.accessToken = accessToken;
+    //         }
+    //         return token;
+    //     },
+    //     async session(session, token) {
+    //         console.log({ ses: session });
+    //         session.accessToken = token.accessToken;
+    //         return session;
+    //     },
+    // },
     debug: true,
 };
 

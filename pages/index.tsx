@@ -28,14 +28,14 @@ const Home: NextPage = () => {
         "all"
     );
 
-    console.group("next-auth session");
-    console.log("session:", session);
-    console.log("status:", status);
-    console.log(
-        "NEXT_PUBLIC_NEXTAUTH_URL:",
-        process.env.NEXT_PUBLIC_NEXTAUTH_URL
-    );
-    console.groupEnd();
+    // console.group("next-auth session");
+    // console.log("session:", session);
+    // console.log("status:", status);
+    // console.log(
+    //     "NEXT_PUBLIC_NEXTAUTH_URL:",
+    //     process.env.NEXT_PUBLIC_NEXTAUTH_URL
+    // );
+    // console.groupEnd();
 
     useEffect(() => {
         fetch(
@@ -64,6 +64,7 @@ const Home: NextPage = () => {
 
     const onClickCategory = (id: number | string) => {
         setCategorySelected(id);
+        setTagsSelected("all");
     };
 
     const onClickPage = (num: number) => {
@@ -190,11 +191,13 @@ const Home: NextPage = () => {
 
                     <SMain>
                         <SMainTop>
-                            <Tags
-                                tags={tags}
-                                onClickTag={onClickTag}
-                                tagSelected={tagSelected}
-                            />
+                            {categorySelected === "all" ? (
+                                <Tags
+                                    tags={tags}
+                                    onClickTag={onClickTag}
+                                    tagSelected={tagSelected}
+                                />
+                            ) : null}
                             <SActions>
                                 <BaseButton style="secondary" size="small">
                                     Add Word
@@ -214,7 +217,7 @@ const Home: NextPage = () => {
                                 );
                             })}
                         </SWordsList>
-                        {pageCount <= 1 ? null : (
+                        {words && pageCount <= 1 ? null : (
                             <SPagination>
                                 <div>Prev</div>
                                 <SPaginationPages>
@@ -242,9 +245,7 @@ const Home: NextPage = () => {
                         <div onClick={() => registerNewUser()}>
                             add new user
                         </div>
-                        <div onClick={() => authNewUser()}>
-                            auth user
-                        </div>
+                        <div onClick={() => authNewUser()}>auth user</div>
                     </SMain>
                 </SBlock>
             </Container>

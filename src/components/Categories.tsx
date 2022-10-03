@@ -36,7 +36,9 @@ const Categories: React.FC<Categories> = ({
                         onClick={() => onClickCategory(category.id)}
                     >
                         {category.attributes.title}
-                        <span>{category.attributes.words.data.length}</span>
+                        {category?.attributes?.words ? (
+                            <span>{category.attributes.words.data.length}</span>
+                        ) : null}
                     </SCategoryItem>
                 ))}
                 <SCategoryItem

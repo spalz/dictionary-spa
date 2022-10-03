@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+import { decrement, increment } from "../src/app/counterSlice";
+
 import { BaseButton } from "@components/elements";
 import { Layout, Container } from "@components/layout";
 import { Categories, Tags } from "@components";
@@ -28,42 +31,61 @@ const Home: NextPage = () => {
         "all"
     );
 
-    // console.group("next-auth session");
-    // console.log("session:", session?.jwt);
-    // console.log("categories:", categories);
+    const count = useSelector((state: any) => state.counter.value);
+    const dispach = useDispatch();
+
+    console.group("next-auth session");
+    console.log("session:", session);
+    // console.log("words:", words);
     // console.log("status:", status);
-    // console.groupEnd();
+    console.groupEnd();
 
     useEffect(() => {
-        fetch(
-            "https://admin.dictionary.dangercactus.io/api/words?pagination[page]=1&pagination[pageSize]=10"
-        )
-            .then((resp) => resp.json())
-            .then((result) => {
-                setData(result.data);
-                setPage(result.meta.pagination.page);
-                setPageCount(result.meta.pagination.pageCount);
-                setIsLoaded(true);
-            })
-            .catch((error) => console.error(error));
+        const jwt = session?.jwt
+            ? {
+                  headers: {
+                      Authorization: `Bearer ${session?.jwt}`,
+                  },
+              }
+            : null;
 
-        fetch("https://admin.dictionary.dangercactus.io/api/tags?populate=*")
-            .then((resp) => resp.json())
-            .then((result) => setTags(result))
-            .catch((error) => console.error(error));
+        if (session?.jwt) {
+            axios
+                .get(
+                    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/words?pagination[page]=1&pagination[pageSize]=10`,
+                    {
+                        ...jwt,
+                    }
+                )
+                .then((result) => {
+                    setData(result.data.data);
+                    setPage(result.data.meta.pagination.page);
+                    setPageCount(result.data.meta.pagination.pageCount);
+                    setIsLoaded(true);
+                })
+                .catch((error) => console.error(error));
 
-        axios
-            .get(
-                "https://admin.dictionary.dangercactus.io/api/categories?populate=*",
-                {
-                    headers: {
-                        Authorization: `Bearer ${session?.jwt}`,
-                    },
-                }
-            )
-            .then((result) => setCategories(result.data.data))
-            .catch((error) => console.error(error));
-    }, []);
+            axios
+                .get(
+                    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/tags?populate=*`,
+                    {
+                        ...jwt,
+                    }
+                )
+                .then((result) => setTags(result.data.data))
+                .catch((error) => console.error(error));
+
+            axios
+                .get(
+                    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/categories?populate=*"`,
+                    {
+                        ...jwt,
+                    }
+                )
+                .then((result) => setCategories(result.data.data))
+                .catch((error) => console.error(error));
+        }
+    }, [session]);
 
     const onClickCategory = (id: number | string) => {
         setCategorySelected(id);
@@ -80,6 +102,14 @@ const Home: NextPage = () => {
 
     useEffect(() => {
         setIsLoaded(false);
+
+        const jwt = session?.jwt
+            ? {
+                  headers: {
+                      Authorization: `Bearer ${session?.jwt}`,
+                  },
+              }
+            : null;
 
         const qs = require("qs");
 
@@ -123,77 +153,49 @@ const Home: NextPage = () => {
         ];
         const main_query_clear = qs.stringify(...main_query);
         const categories_query_clear = `&${qs.stringify(...main_categories)}`;
-        const link = `https://admin.dictionary.dangercactus.io/api/words?${main_query_clear}${categories_query_clear}`;
-        fetch(link)
-            .then((resp) => resp.json())
+        const link = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/words?${main_query_clear}${categories_query_clear}`;
+        axios
+            .get(link, {
+                ...jwt,
+            })
             .then((result) => {
-                setData(result.data);
-                setPageCount(result.meta.pagination.pageCount);
+                setData(result.data.data);
+                setPageCount(result.data.meta.pagination.pageCount);
                 setPage(
-                    result.meta.pagination.pageCount <= 1
+                    result.data.meta.pagination.pageCount <= 1
                         ? 1
-                        : result.meta.pagination.page
+                        : result.data.meta.pagination.page
                 );
                 setIsLoaded(true);
             })
             .catch((error) => console.error(error));
     }, [page, tagSelected, categorySelected]);
 
-    const registerNewUser = () => {
-        axios
-            .post(
-                `${process.env.NEXT_PUBLIC_STRSPI_API_URL}/api/auth/local/register`,
-                {
-                    username: "Strapi new user 4",
-                    email: "user4@strapi.io",
-                    password: "1975805",
-                }
-            )
-            .then((response) => {
-                // Handle success.
-                console.group("Well done!");
-                console.log("User profile", response.data.user);
-                console.log("User token", response.data.jwt);
-                console.groupEnd();
-            })
-            .catch((error) => {
-                // Handle error.
-                console.log("An error occurred:", error.response);
-            });
-    };
-
-    const authNewUser = () => {
-        axios
-            .post(`${process.env.NEXT_PUBLIC_STRSPI_API_URL}/api/auth/local`, {
-                identifier: "user@strapi.io",
-                password: "1975805",
-            })
-            .then((response) => {
-                // Handle success.
-                console.log("Well done!");
-                console.log("User profile", response.data.user);
-                console.log("User token", response.data.jwt);
-            })
-            .catch((error) => {
-                // Handle error.
-                console.log("An error occurred:", error.response);
-            });
-    };
-
     return (
         <Layout>
             <Container>
                 {/* {isLoaded ?  <Loader bg={true} type="fixed" />} */}
                 {/* {isLoaded ? "true" : "false"} */}
+
+                <span onClick={() => dispach(decrement())}>-</span>
+                {count}
+                <span onClick={() => dispach(increment())}>+</span>
+
+                <br />
+                <br />
+                <br />
+                <br />
                 <SBlock>
-                    <Categories
-                        categories={categories}
-                        onClickCategory={onClickCategory}
-                        categorySelected={categorySelected}
-                    />
+                    {categories ? (
+                        <Categories
+                            onClickCategory={onClickCategory}
+                            categories={categories}
+                            categorySelected={categorySelected}
+                        />
+                    ) : null}
 
                     <SMain>
-                        {/* <SMainTop>
+                        <SMainTop>
                             {categorySelected === "all" ? (
                                 <Tags
                                     tags={tags}
@@ -209,18 +211,20 @@ const Home: NextPage = () => {
                                     Create Quiz
                                 </BaseButton>
                             </SActions>
-                        </SMainTop> */}
-                        <SWordsList>
-                            {words?.map((item: WordProps) => {
-                                return (
-                                    <Word
-                                        key={item.id}
-                                        attributes={item.attributes}
-                                    ></Word>
-                                );
-                            })}
-                        </SWordsList>
-                        {words && pageCount <= 1 ? null : (
+                        </SMainTop>
+                        {words ? (
+                            <SWordsList>
+                                {words?.map((item: WordProps) => {
+                                    return (
+                                        <Word
+                                            key={item.id}
+                                            attributes={item.attributes}
+                                        ></Word>
+                                    );
+                                })}
+                            </SWordsList>
+                        ) : null}
+                        {pageCount <= 1 ? null : (
                             <SPagination>
                                 <div>Prev</div>
                                 <SPaginationPages>
@@ -245,10 +249,6 @@ const Home: NextPage = () => {
                                 <div>Next</div>
                             </SPagination>
                         )}
-                        <div onClick={() => registerNewUser()}>
-                            add new user
-                        </div>
-                        <div onClick={() => authNewUser()}>auth user</div>
                     </SMain>
                 </SBlock>
             </Container>

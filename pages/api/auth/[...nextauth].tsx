@@ -1,9 +1,48 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from "next-auth";
 import axios from "axios";
+import type { NextApiRequest, NextApiResponse } from "next";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-export default async function auth(req: any, res: any) {
+export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+    const strapi_providers = (id: string | number, name: string) => [
+        {
+            clientId: "0",
+            type: "oauth",
+            id: id,
+            name: name,
+            authorization: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/connect/${id}`,
+            token: {
+                url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback`,
+                async request(context: any) {
+                    const tokens = await context;
+                    return { tokens };
+                },
+            },
+            userinfo: {
+                async request(context: any) {
+                    const tokens = await context;
+                    const profile = await axios.get(
+                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback?access_token=${tokens.tokens.params.access_token}`
+                    );
+                    return await profile.data;
+                },
+            },
+            profile(profile: any) {
+                return {
+                    jwt: profile.jwt,
+                    id: profile.user.id.toString(),
+                    name: profile.user.username,
+                    email: profile.user.email,
+                };
+            },
+        },
+    ];
+
     const providers = [
+        ...strapi_providers("google", "Google"),
+        ...strapi_providers("twitter", "Twitter"),
+        ...strapi_providers("github", "Github"),
+        ...strapi_providers("facebook", "Facebook"),
         CredentialsProvider({
             id: "login",
             name: "Email",
@@ -18,15 +57,12 @@ export default async function auth(req: any, res: any) {
                 },
             },
             async authorize(credentials) {
-                const data = {
-                    identifier: credentials?.identifier,
-                    password: credentials?.password,
-                };
                 try {
                     const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_STRSPI_API_URL}/api/auth/local`,
+                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local`,
                         {
-                            ...data,
+                            identifier: credentials?.identifier,
+                            password: credentials?.password,
                         }
                     );
                     const user: any = {
@@ -34,7 +70,52 @@ export default async function auth(req: any, res: any) {
                         name: response?.data.user.username || "",
                         email: response?.data.user.email || "",
                     };
-                    console.log(user);
+                    if (user) {
+                        return user;
+                    }
+                    return null;
+                } catch (error) {
+                    console.log(error);
+                    return false;
+                }
+            },
+        }),
+        CredentialsProvider({
+            id: "register",
+            name: "Email",
+            credentials: {
+                username: {
+                    label: "username",
+                    type: "text",
+                },
+                email: {
+                    label: "email",
+                    type: "text",
+                },
+                level: {
+                    label: "level",
+                    type: "text",
+                },
+                password: {
+                    label: "password",
+                    type: "password",
+                },
+            },
+            async authorize(credentials) {
+                try {
+                    const response = await axios.post(
+                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local/register`,
+                        {
+                            username: credentials?.username,
+                            email: credentials?.email,
+                            password: credentials?.password,
+                        }
+                    );
+                    const user: any = {
+                        jwt: response?.data.jwt,
+                        name: response?.data.user.username || "",
+                        email: response?.data.user.email || "",
+                    };
                     if (user) {
                         return user;
                     }
@@ -47,6 +128,7 @@ export default async function auth(req: any, res: any) {
         }),
     ];
     return await NextAuth(req, res, {
+        // @ts-ignore
         providers,
         session: {
             strategy: "jwt",
@@ -69,5 +151,6 @@ export default async function auth(req: any, res: any) {
                 return session;
             },
         },
+        debug: false,
     });
 }

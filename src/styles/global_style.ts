@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
         line-height: 1.4;
         overflow-y: scroll;
         font-size: 14px;
+        margin: 0;
         ${up("xga")} {
             font-size: 17px;
         }

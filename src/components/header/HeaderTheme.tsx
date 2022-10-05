@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 
-import { useThemeSettings } from "../../utils";
+import { useThemeSettings } from "@utils";
 import { down } from "@config/breakpoints_vars";
-import { colors, global } from "@styles/vars";
+import { SubmitButton } from "@components/elements";
+import { colors, global, spacings } from "@styles/vars";
 
 const IconDay = dynamic(() => import("@icons/IconDay"), {
     ssr: false,
@@ -29,34 +30,23 @@ const HeaderAssistPanel = () => {
     }, [classname]);
 
     return (
-        <SHeaderTheme onClick={() => onClickChangeTheme()}>
-            {classname === "day" ? <IconNight /> : <IconDay />}
+        <SHeaderTheme>
+            <SubmitButton
+                size="small"
+                style="ghost_stroke"
+                onClick={() => onClickChangeTheme()}
+            >
+                {classname === "day" ? <IconNight /> : <IconDay />}
+            </SubmitButton>
         </SHeaderTheme>
     );
 };
 
 const SHeaderTheme = styled.div`
-    border-radius: 50%;
-    background-color: ${colors?.bg_beige};
-    padding: 4px;
-    cursor: pointer;
-    transition: color ${global?.transition} ease-out;
-    margin-left: 40px;
-    ${down("sm")} {
-        margin-left: 20px;
-    }
-    ${down("xs")} {
-        margin-left: 10px;
-    }
-    &:hover {
-        color: ${colors?.typo_link};
-    }
     svg {
-        width: 36px;
-        height: 36px;
+        width: 22px;
+        height: 22px;
         ${down("sm")} {
-            width: 28px;
-            height: 28px;
         }
     }
 `;

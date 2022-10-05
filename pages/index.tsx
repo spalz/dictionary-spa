@@ -34,8 +34,8 @@ const Home: NextPage = () => {
     const count = useSelector((state: any) => state.counter.value);
     const dispach = useDispatch();
 
-    console.group("next-auth session");
-    console.log("session:", session);
+    // console.group("next-auth session");
+    // console.log("session:", session);
     // console.log("words:", words);
     // console.log("status:", status);
     console.groupEnd();

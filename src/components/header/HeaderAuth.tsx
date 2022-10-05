@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { BaseButton } from "@components/elements";
+import { useSession, signOut } from "next-auth/react";
 
-import { spacings, fonts, colors } from "@styles/vars";
+import { BaseButton } from "@components/elements";
+import { spacings, fonts } from "@styles/vars";
+import { AuthLoginR } from "@utils/routes";
+import { LinkButton } from "@components/elements";
 
 const HeaderAuth = () => {
     const { data: session } = useSession();
@@ -23,9 +25,9 @@ const HeaderAuth = () => {
     }
     return (
         <SHeaderAuth>
-            <BaseButton size="small" style="primary" onClick={() => signIn()}>
+            <LinkButton href={AuthLoginR()} size="small" style="primary">
                 Sign in
-            </BaseButton>
+            </LinkButton>
         </SHeaderAuth>
     );
 };
@@ -33,9 +35,10 @@ const HeaderAuth = () => {
 const SHeaderAuth = styled.div`
     display: flex;
     align-items: center;
-    a {
-        padding-right: ${spacings?.offset_10};
-        font-size: ${fonts?.fs_14};
+    > a,
+    > div {
+        margin-right: ${spacings?.offset_10};
+        /* font-size: ${fonts?.fs_14}; */
         font-weight: ${fonts?.fw_medium};
     }
     margin-left: auto;

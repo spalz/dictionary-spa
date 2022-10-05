@@ -13,7 +13,7 @@ import {
 import { down } from "@config/breakpoints_vars";
 import { colors, fonts, global } from "@styles/vars";
 
-interface BaseButton {
+export interface BaseButtonProps {
     style?:
         | "primary"
         | "primary_stroke"
@@ -32,7 +32,7 @@ interface BaseButton {
     tabIndex?: number;
 }
 
-const BaseButton: React.FC<BaseButton> = ({
+const BaseButton: React.FC<BaseButtonProps> = ({
     style = "primary",
     size = "mid",
     disabled = false,
@@ -84,7 +84,7 @@ const SBaseButton = styled.div`
     }
     ////////////////////
     &.button__small {
-        height: 34 px;
+        height: 34px;
         padding: 0 0.5em;
         font-size: ${fonts?.fs_16};
         font-weight: ${fonts?.fw_regular};

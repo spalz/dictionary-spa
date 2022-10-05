@@ -2,7 +2,12 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import { position } from "polished";
 
-import { HeaderLogo, HeaderTheme, HeaderAuth } from "@components/header";
+import {
+    HeaderLogo,
+    HeaderTheme,
+    HeaderAuth,
+    HeaderMenu,
+} from "@components/header";
 import { Container } from "@components/layout";
 import { down } from "@config/breakpoints_vars";
 import { fonts, global, colors } from "@styles/vars";
@@ -13,8 +18,9 @@ let Header = () => {
             <Container>
                 <SBlock>
                     <HeaderLogo />
-                    <HeaderTheme />
+                    <HeaderMenu />
                     <HeaderAuth />
+                    <HeaderTheme />
                 </SBlock>
             </Container>
         </SHeader>

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Header } from "@components/header";
-import { spacings } from "@styles/vars";
+import { spacings, global } from "@styles/vars";
 
 interface Layout {
     children: React.ReactNode;
@@ -11,19 +11,18 @@ interface Layout {
 const Layout: React.FC<Layout> = ({ children }) => {
     return (
         <SLayout>
-            <SBlock>
-                <Header />
-                <SMain>{children}</SMain>
-            </SBlock>
+            <Header />
+            <SMain>{children}</SMain>
         </SLayout>
     );
 };
 
-const SLayout = styled.div``;
-const SBlock = styled.div``;
-const SMain = styled.main`
+const SLayout = styled.div`
     min-height: 100vh;
+`;
+const SMain = styled.main`
     margin: 0 0 ${spacings?.offset_120} 0;
+    min-height: calc(100vh - ${global?.header_height});
 `;
 
 export default Layout;

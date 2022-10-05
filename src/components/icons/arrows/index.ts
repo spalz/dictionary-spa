@@ -1,0 +1,10 @@
+export { default as IconBottom } from "./IconBottom";
+export { default as IconLeft } from "./IconLeft";
+export { default as IconLognBottom } from "./IconLognBottom";
+export { default as IconLognRight } from "./IconLognRight";
+export { default as IconLognTop } from "./IconLognTop";
+export { default as IconResize } from "./IconResize";
+export { default as IconRight } from "./IconRight";
+export { default as IconTop } from "./IconTop";
+export { default as IconTriangleBottom } from "./IconTriangleBottom";
+export { default as IconTriangleTop } from "./IconTriangleTop";

@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { darken, lighten } from "polished";
 
 export const base_colors = {
-    interactive: "#FF714F",
+    interactive: "#F05644",
     day_bg_grey: "#E7E7E7",
     night_bg_grey: "#2B2A2A",
     white: "#ffffff",
@@ -81,21 +81,13 @@ export const colors = {
     form_base_border: "var(--form-baseborder)",
     form_base_bg: "var(--form-basebg)",
     form_base_typo: "var(--form-basetypo)",
-
-    character_blue: "var(--character-blue)",
-    character_violet: "var(--character-violet)",
-    character_green: "var(--character-green)",
-    character_beige: "var(--character-beige)",
-    character_yellow: "var(--character-yellow)",
-    character_orange: "var(--character-orange)",
-    character_pink: "var(--character-pink)",
 };
 
 const ThemeVarsStyle = createGlobalStyle`
     :root {
         --white: #FFFFFF;
         --black-light: #292929;
-        --black: #111111;
+        --black: #282421;
 
         .day, .day_important {
             --typo-link-hover: #1053AB;
@@ -105,8 +97,8 @@ const ThemeVarsStyle = createGlobalStyle`
             --typo-inverse: #F4F4F4;
             --typo-placeholder: #B9B9B9;
             --typo-secondary: #8A8A8E;
-            --typo-primary: #242424;
-            --typo-interactive: #FF714F;
+            --typo-primary: var(--black);
+            --typo-interactive: #F05644;
         }
         .night {
             --typo-link-hover: #0078D2;
@@ -117,7 +109,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --typo-placeholder: #B9B9B9;
             --typo-secondary: #8D8D93;
             --typo-primary: #DEDEDE;
-            --typo-interactive: #FF714F;
+            --typo-interactive: #F05644;
         }
         .day, .day_important {
             --bg-light: #FFFFFF;
@@ -130,8 +122,8 @@ const ThemeVarsStyle = createGlobalStyle`
             --bg-grey: #E7E7E7;
             --bg-dark: #101010;
             --bg-beige: ${colors?.color_beige_day};
-            --bg-interactive: #FF714F;
-            --bg-body: ${colors?.color_beige_day};
+            --bg-interactive: #F05644;
+            --bg-body: var(--white);
             --bg-body-border: ${darken(0.06, colors?.color_beige_day)};
             --bg-grey-200: #DFDEDE;
             //
@@ -139,7 +131,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --bg-gradient-danger: linear-gradient(90deg, #FFFFFF 0%, rgba(247, 220, 220, 0.4) 100%);
         }
         .night {
-            --bg-light: #111111;
+            --bg-light: #282421;
             --bg-warning-light: #DEB54E;
             --bg-danger-light: #E67D89;
             --bg-success-light: #327C4A;
@@ -149,7 +141,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --bg-grey: #2B2A2A;
             --bg-dark: #FFFFFF;
             --bg-beige: #232323;
-            --bg-interactive: #FF714F;
+            --bg-interactive: #F05644;
             --bg-body: ${colors?.color_beige_night};
             --bg-body-border: ${lighten(0.06, colors?.color_beige_night)};
             --bg-grey-200: #1C1C1C;
@@ -166,8 +158,8 @@ const ThemeVarsStyle = createGlobalStyle`
             
             --btn-secondaryhover-typo: #FFFFFF;
             --btn-secondaryfocus: #1E1E1E;
-            --btn-secondaryhover: ${darken(0.05, "#FF714F")};
-            --btn-secondarybg: #FF714F;
+            --btn-secondaryhover: ${darken(0.05, "#F05644")};
+            --btn-secondarybg: #F05644;
             --btn-secondarytypo: #FFFFFF;
 
             --btn-ghosthover-typo: #363636;
@@ -179,8 +171,8 @@ const ThemeVarsStyle = createGlobalStyle`
         .night {
             --btn-secondaryhover-typo: #FFFFFF;
             --btn-secondaryfocus: #fff;
-            --btn-secondaryhover: #FF714F;
-            --btn-secondarybg: #FF714F;
+            --btn-secondaryhover: #F05644;
+            --btn-secondarybg: #F05644;
             --btn-secondarytypo: #FFFFFF;
             
             --btn-ghosthover-typo: #F1F1F1;
@@ -196,8 +188,8 @@ const ThemeVarsStyle = createGlobalStyle`
             --btn-primarytypo: #1E1E1E;
         }
         .day, .day_important {
-            --form-checkedborder: #FF714F;
-            --form-checkedbg: #FF714F;
+            --form-checkedborder: #F05644;
+            --form-checkedbg: #F05644;
             --form-checkedtypo: #F4ECA4;
             --form-negativeborder: #EB5757;
             --form-negativebg: #EB5757;
@@ -210,8 +202,8 @@ const ThemeVarsStyle = createGlobalStyle`
             --form-disabledtypo: #ADADAD;
             --form-focusborder: #F4ECA4;
             --form-focusbg: ${colors?.color_beige_day};
-            --form-focustypo: #FF714F;
-            --form-hoverborder: #FF714F;
+            --form-focustypo: #F05644;
+            --form-hoverborder: #F05644;
             --form-hoverbg: ${colors?.color_beige_day};
             --form-hovertypo: #000000;
             --form-baseborder: #1E1E1E;
@@ -220,8 +212,8 @@ const ThemeVarsStyle = createGlobalStyle`
         }
         .night {
             --form-checkedtypo: #F4ECA4;
-            --form-checkedbg: #FF714F;
-            --form-checkedborder: #FF714F;
+            --form-checkedbg: #F05644;
+            --form-checkedborder: #F05644;
             --form-negativetypo: #FFFFFF;
             --form-negativebg: #EB5757;
             --form-negativeborder: #EB5757;
@@ -231,34 +223,25 @@ const ThemeVarsStyle = createGlobalStyle`
             --form-disabledtypo: #ADADAD;
             --form-disabledbg: #CCCCCC;
             --form-disabledborder: #CCCCCC;
-            --form-focustypo: #FF714F;
+            --form-focustypo: #F05644;
             --form-focusbg: ${colors?.color_beige_day};
             --form-focusborder: #F4ECA4;
             --form-hovertypo: #FFFFFF;
             --form-hoverbg: #000000;
-            --form-hoverborder: #FF714F;
+            --form-hoverborder: #F05644;
             --form-basetypo: #FFFFFF;
             --form-basebg: #000000;
             --form-baseborder: #E8E6EA;
         }
-        .day, .day_important {
-            --character-blue: #8EC8F9;
-            --character-violet: #C4ADFF;
-            --character-green: #BEDB7A;
-            --character-beige: #E2DAA1;
-            --character-yellow: #F4ECA4;
-            --character-orange: #FF8568;
-            --character-pink: #DB95E1;
-        }
-        .night {
-            --character-blue: #8EC8F9;
-            --character-violet: #C4ADFF;
-            --character-green: #BEDB7A;
-            --character-beige: #E2DAA1;
-            --character-yellow: #F4ECA4;
-            --character-orange: #FF8568;
-            --character-pink: #DB95E1;
-        }
+        
+        --color-barley-corn: #A77C60;
+        --color-dawn-pink: #F2EAE1;
+        --color-blue: #5384CE;
+        --color-tradewind: #6EBCB6;
+        --color-gull-gray: #9CB6BD;
+        --color-flamingo: #F05644;
+        --color-yellow: #FEB12E;
+        --color-tacao: #F0A482;
     }
 `;
 

@@ -5,7 +5,7 @@ import { Container } from "@components/layout";
 import { SOffsetStyle } from "@styles/global_style";
 
 interface BaseButton {
-    container: boolean;
+    container?: boolean;
     offset: Array<
         | "top-120"
         | "bottom-120"
@@ -15,11 +15,13 @@ interface BaseButton {
         | "bottom-40"
         | "top-20"
         | "bottom-20"
+        | "top-10"
+        | "bottom-10"
         | "top-0"
         | "bottom-0"
     >;
     children: React.ReactNode;
-    align: "left" | "center";
+    align?: "left" | "center";
 }
 
 const Wrapper: React.FC<BaseButton> = ({

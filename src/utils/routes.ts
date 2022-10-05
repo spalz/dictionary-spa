@@ -4,6 +4,9 @@ export const MainR = () => `/`;
 export const AuthLoginInvalidR = () => `/auth/login-invalid/`;
 //
 export const AuthLoginR = () => `/auth/login/`;
+export const AuthLoginEmailR = () => `/auth/login-email/`;
+export const AuthRegisterEmailR = () => `/auth/register-email/`;
+
 export const AuthNewPasswordR = () => `/auth/new-password/`;
 export const AuthRecoveryPasswordR = () => `/auth/recovery-password/`;
 export const AuthRegisterR = () => `/auth/register/`;

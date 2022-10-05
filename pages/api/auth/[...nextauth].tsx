@@ -13,13 +13,15 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             authorization: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/connect/${id}`,
             token: {
                 url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback`,
-                async request(context: any) {
+                async request(context: Array<string>) {
                     const tokens = await context;
                     return { tokens };
                 },
             },
             userinfo: {
-                async request(context: any) {
+                async request(context: {
+                    tokens: { params: { access_token: string } };
+                }) {
                     const tokens = await context;
                     const profile = await axios.get(
                         `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback?access_token=${tokens.tokens.params.access_token}`
@@ -27,7 +29,14 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                     return await profile.data;
                 },
             },
-            profile(profile: any) {
+            profile(profile: {
+                jwt: string;
+                user: {
+                    id: string;
+                    username: string;
+                    email: string;
+                };
+            }) {
                 return {
                     jwt: profile.jwt,
                     id: profile.user.id.toString(),
@@ -41,11 +50,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     const providers = [
         ...strapi_providers("google", "Google"),
         ...strapi_providers("twitter", "Twitter"),
-        ...strapi_providers("github", "Github"),
+        // ...strapi_providers("github", "Github"),
         ...strapi_providers("facebook", "Facebook"),
         CredentialsProvider({
             id: "login",
-            name: "Email",
+            name: "Credentials",
             credentials: {
                 identifier: {
                     label: "Email",
@@ -82,7 +91,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         }),
         CredentialsProvider({
             id: "register",
-            name: "Email",
+            name: "Credentials",
             credentials: {
                 username: {
                     label: "username",
@@ -90,10 +99,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 },
                 email: {
                     label: "email",
-                    type: "text",
-                },
-                level: {
-                    label: "level",
                     type: "text",
                 },
                 password: {

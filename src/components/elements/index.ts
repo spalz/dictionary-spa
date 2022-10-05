@@ -6,8 +6,9 @@ export { default as BaseButton } from "./button/BaseButton";
 //
 export { default as DateFormat } from "./DateFormat";
 export { default as Loader } from "./Loader";
-// export { default as Meta } from "./Meta";
+export { default as Meta } from "./Meta";
 export { default as Headline } from "./Headline";
+export { default as Textline } from "./Textline";
 export { default as Link } from "./Link";
 // export { default as SoacialList } from "./SoacialList";
 // export { default as Avatar } from "./Avatar";

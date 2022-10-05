@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 
-import BaseButton from "./BaseButton";
+import BaseButton, { BaseButtonProps } from "./BaseButton";
 
-interface LinkButton {
+interface LinkButton extends BaseButtonProps {
     href: string;
     as?: string;
 }

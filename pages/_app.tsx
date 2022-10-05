@@ -11,6 +11,7 @@ import {
     SpacingVarsStyle,
     ThemeVarsStyle,
     FontsStyle,
+    FormVarsStyle,
 } from "@styles";
 
 function MyApp({
@@ -25,6 +26,7 @@ function MyApp({
             <SpacingVarsStyle />
             <ThemeVarsStyle />
             <FontsStyle />
+            <FormVarsStyle />
             <SessionProvider session={session}>
                 <Provider store={store}>
                     <Component {...pageProps} />

@@ -15,19 +15,10 @@ export const global = {
     /* z-index */
     zi_header: 20,
 
-    zi_modal_overlay: 30,
-    zi_modal: 31,
-    zi_modal_close: 31,
-    zi_modal_open_button: 31,
-
-    /* course */
-    course_container_width: "var(--course-container-width)",
-
-    /* static page */
-    static_page_banner_height: "var(--static-page-banner-height)",
-
-    /* profile */
-    progile_sidebar_width: "var(--progile-sidebar-width)",
+    /* controls */
+    control_height_small: "var(--control-small-height)",
+    control_height_mid: "var(--control-mid-height)",
+    control_height_large: "var(--control-large-height)",
 };
 
 const GlobalVarsStyle = createGlobalStyle`
@@ -44,25 +35,14 @@ const GlobalVarsStyle = createGlobalStyle`
             --header-height: 76px;
         }
 
-        /* course */
-        --course-container-width: 720px;
-        ${down("lg")} {
-            --course-container-width: auto;
-        }
-        ${down("md")} {
-            --course-container-width: 100%;
-        }
-
-        /* static page */
-        --static-page-banner-height: 460px;
+        --control-small-height: 34px;
+        --control-mid-height: 46px;
         ${down("sm")} {
-            --static-page-banner-height: 320px;
+            --control-mid-height: 40px;
         }
-
-        /* profile */
-        --progile-sidebar-width: 460px;
-        ${down("lg")} {
-            --progile-sidebar-width: 300px;
+        --control-large-height: 58px;
+        ${down("sm")} {
+            --control-large-height: 48px;
         }
 
     }

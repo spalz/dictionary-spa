@@ -1,5 +1,4 @@
 import React from "react";
-import PT from "prop-types";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -43,10 +42,13 @@ const error = false;
 
 interface RegisterFormProps {
     providers: Array<ProviderProps>;
-    csrfToken?: string;
+    csrfToken: string;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ providers }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({
+    providers,
+    csrfToken,
+}) => {
     const {
         control,
         formState: { errors, isValid },
@@ -58,6 +60,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ providers }) => {
     return (
         <>
             <form action="/api/auth/callback/register" method="post">
+                <input
+                    type="hidden"
+                    defaultValue={csrfToken}
+                    name="csrfToken"
+                />
                 <BlockForm
                     success={false}
                     success_icon={<IconNight />}
@@ -66,7 +73,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ providers }) => {
                 >
                     <ProvidersList providers={providers} compact />
 
-                    {error ? <InfoForm>auth:register_error</InfoForm> : null}
+                    {error ? <InfoForm>error</InfoForm> : null}
                     <div>
                         <Controller
                             render={({ field }) => (
@@ -110,7 +117,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ providers }) => {
                             control={control}
                         />
                     </div>
-                    <Wrapper offset={["top-20", "bottom-20"]}>
+                    <Wrapper offset={["bottom-20"]}>
                         <ButtonForm
                             tabIndex={tabindex.register + 4}
                             disabled={!isValid}

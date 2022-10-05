@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, FocusEvent } from "react";
 import CN from "classnames";
-import { FieldError } from "react-hook-form";
+import { FieldError, ChangeHandler } from "react-hook-form";
 
 import { FieldWrap, BaseFormField } from "@components/form";
 import { SInputStyle } from "./fields_style";
@@ -9,32 +9,45 @@ interface FormInputFieldProps {
     id: number;
     label: string;
     disabled?: boolean;
-    className?: string;
     error?: FieldError;
     type?: "text" | "email";
+    value: string | undefined;
+    onBlur: ({ target }: { target: EventTarget | null }) => void;
 }
 
 const FormInputField: React.FC<FormInputFieldProps> = React.forwardRef(
     (
-        { id, label, disabled, className, error, type = "text", ...props },
+        { id, label, disabled, error, type = "text", value, onBlur, ...field },
         ref
     ) => {
+        const [focused, setFocus] = useState(false);
+        const onFocus = () => {
+            setFocus(true);
+        };
+        const onBlurField = (e: FocusEvent<HTMLInputElement>) => {
+            onBlur(e);
+            setFocus(false);
+        };
+        const focus = !!(focused || value);
+
         return (
             <FieldWrap error={error}>
                 <BaseFormField
                     id={id}
                     label={label}
-                    className={CN(className, {
+                    classNames={CN({
+                        focus: focus,
                         disabled: disabled,
                     })}
                 >
                     <SInputStyle>
                         <input
+                            {...field}
                             disabled={disabled}
-                            className="input_field"
                             tabIndex={id}
                             type={type}
-                            {...props}
+                            onFocus={onFocus}
+                            onBlur={onBlurField}
                         />
                     </SInputStyle>
                 </BaseFormField>

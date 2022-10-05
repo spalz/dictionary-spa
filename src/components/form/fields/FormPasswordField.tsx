@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FocusEvent } from "react";
 import CN from "classnames";
 import styled from "styled-components";
 import { position } from "polished";
@@ -14,43 +14,68 @@ interface FormPasswordFieldProps {
     disabled?: boolean;
     className?: string;
     error?: FieldError;
+    value: string | undefined;
+    onBlur: ({ target }: { target: EventTarget | null }) => void;
 }
 
-const FormPasswordField: React.FC<FormPasswordFieldProps> = ({
-    id,
-    label,
-    disabled,
-    error,
-    ...rest
-}) => {
-    const [passwordShow, setPasswordShow] = useState(true);
+const FormPasswordField: React.FC<FormPasswordFieldProps> = React.forwardRef(
+    (
+        { id, label, disabled, className, error, onBlur, value, ...props },
+        ref
+    ) => {
+        const [passwordShow, setPasswordShow] = useState(true);
+        const [focused, setFocus] = useState(false);
 
-    const togglePasswordShow = () => {
-        setPasswordShow(!passwordShow);
-    };
-    return (
-        <FieldWrap error={error}>
-            <BaseFormField id={id} label={label} {...rest}>
-                <SInputStyle>
-                    <input
-                        disabled={disabled}
-                        className="input_field"
-                        type={passwordShow ? "password" : "text"}
-                        {...rest}
-                    />
-                </SInputStyle>
-                <STogglePassword
-                    onClick={togglePasswordShow}
-                    className={CN({
-                        active: passwordShow,
+        const togglePasswordShow = () => {
+            setPasswordShow(!passwordShow);
+        };
+
+        const onFocus = () => {
+            setFocus(true);
+        };
+        const onBlurField = (e: FocusEvent<HTMLInputElement>) => {
+            onBlur(e);
+            setFocus(false);
+        };
+        const focus = !!(focused || value);
+
+        return (
+            <FieldWrap error={error}>
+                <BaseFormField
+                    id={id}
+                    label={label}
+                    classNames={CN({
+                        focus: focus,
+                        disabled: disabled,
                     })}
                 >
-                    {passwordShow ? <IconEyeOpen /> : <IconEyeClosed />}
-                </STogglePassword>
-            </BaseFormField>
-        </FieldWrap>
-    );
-};
+                    <SInputStyle>
+                        <input
+                            {...props}
+                            disabled={disabled}
+                            className="input_field"
+                            type={passwordShow ? "password" : "text"}
+                            id={id.toString()}
+                            onFocus={onFocus}
+                            onBlur={onBlurField}
+                            tabIndex={id}
+                        />
+                    </SInputStyle>
+                    <STogglePassword
+                        onClick={togglePasswordShow}
+                        className={CN({
+                            active: passwordShow,
+                        })}
+                    >
+                        {passwordShow ? <IconEyeOpen /> : <IconEyeClosed />}
+                    </STogglePassword>
+                </BaseFormField>
+            </FieldWrap>
+        );
+    }
+);
+
+FormPasswordField.displayName = "FormPasswordField";
 
 const STogglePassword = styled.div`
     ${position("absolute", "50%", "var(--field-spacing-h)", null, null)};

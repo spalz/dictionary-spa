@@ -13,7 +13,7 @@ const InfoForm: React.FC<InfoFormProps> = ({ children, type = "error" }) => {
 };
 
 const SInfoForm = styled.div`
-    border-radius: ${global?.border_radius_big};
+    border-radius: ${global?.border_radius};
     padding: ${spacings?.spacing_card_tiny} ${spacings?.spacing_card_small};
     margin-bottom: ${spacings?.offset_10};
     &.error {

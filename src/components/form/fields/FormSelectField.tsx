@@ -5,7 +5,7 @@ import { FieldError } from "react-hook-form";
 
 import { IconTriangleTop } from "@components/icons/arrows";
 import { BaseFormField, FieldWrap } from "@components/form";
-import { colors, fonts, forms } from "@styles/vars";
+import { colors, fonts, forms, global } from "@styles/vars";
 
 const DropdownIndicator = (props: any) => {
     return (
@@ -67,7 +67,7 @@ const selectStyles = {
     control: (styles: any, state: any) => ({
         ...styles,
         backgroundColor: "trasparent",
-        minHeight: forms?.field_height,
+        minHeight: global?.control_height_mid,
         height: "auto",
         borderWidth: forms?.field_border_width,
         outline: "none",

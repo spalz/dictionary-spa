@@ -77,41 +77,38 @@ const SBaseButton = styled.div`
     transition: all ${global?.transition};
     font-family: ${fonts?.ff_base};
     border-width: ${global?.border_width};
-    border-radius: ${global?.border_radius_big};
+    border-radius: ${global?.border_radius};
     &.block {
         display: flex;
         width: 100%;
     }
     ////////////////////
     &.button__small {
-        height: 34px;
+        height: ${global?.control_height_small};
         padding: 0 0.5em;
         font-size: ${fonts?.fs_16};
         font-weight: ${fonts?.fw_regular};
         ${down("sm")} {
             padding: 0 1.1em;
-            height: 40px;
             font-size: ${fonts?.fs_16};
         }
     }
     &.button__mid {
-        height: 46px;
+        height: ${global?.control_height_mid};
         padding: 0 1em;
         font-size: ${fonts?.fs_18};
         font-weight: ${fonts?.fw_regular};
         ${down("sm")} {
             padding: 0 1.1em;
-            height: 40px;
             font-size: ${fonts?.fs_16};
         }
     }
     &.button__large {
-        height: 58px;
+        height: ${global?.control_height_large};
         padding: 0 1.2em;
         font-size: ${fonts?.fs_18};
         font-weight: ${fonts?.fw_medium};
         ${down("sm")} {
-            height: 48px;
             padding: 0 1.1em;
             font-size: ${fonts?.fs_18};
         }

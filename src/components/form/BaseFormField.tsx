@@ -5,7 +5,7 @@ import { SLabelStyle } from "@components/form/fields/fields_style";
 
 interface BaseFormFieldProps {
     id: number;
-    className?: any;
+    classNames: string;
     label?: string;
     children: React.ReactNode;
 }
@@ -13,10 +13,11 @@ interface BaseFormFieldProps {
 const BaseFormField: React.FC<BaseFormFieldProps> = ({
     id,
     label,
+    classNames,
     children,
 }) => {
     return (
-        <SFormField>
+        <SFormField className={classNames}>
             <SBlock>
                 {label ? (
                     <SLabelStyle htmlFor={id?.toString()}>{label}</SLabelStyle>

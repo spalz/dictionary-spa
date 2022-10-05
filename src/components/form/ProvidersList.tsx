@@ -61,6 +61,7 @@ const SItem = styled.a`
         color: ${colors?.typo_interactive};
     }
     .compact & {
+        margin-bottom: 0;
     }
 `;
 
@@ -106,6 +107,7 @@ const ProvidersList: React.FC<ProvidersListProps> = ({
                         </Link>
                     )}
                 </SList>
+                {compact && <SOr>Or</SOr>}
             </SProvidersList>
         )
     );
@@ -118,6 +120,9 @@ const SList = styled.div`
         justify-content: space-between;
         gap: ${spacings.offset_10};
     }
+`;
+const SOr = styled.div`
+    margin: ${spacings.offset_10} 0;
 `;
 
 export default ProvidersList;

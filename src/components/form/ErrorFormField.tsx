@@ -47,13 +47,13 @@ const SErrorFormField = styled.div`
         margin-top: 0.2em;
     }
     &:last-child {
-        margin-bottom: 1.2em;
+        margin-bottom: 1em;
     }
 `;
 
 const SText = styled.div`
     transition: height ${global?.transition};
-    font-size: ${fonts?.fs_16};
+    font-size: ${fonts?.fs_14};
     height: 0;
     overflow: hidden;
     white-space: nowrap;

@@ -14,14 +14,14 @@ export const SInputStyle = styled.div`
         font-weight: ${forms?.field_font_weight};
         font-size: ${forms?.field_font_size};
         transition: all ${global?.transition} ease;
-        padding: ${forms?.field_spacing_v} ${forms?.field_spacing_h};
+        padding: 1em ${forms?.field_spacing_h} 0;
         color: ${colors?.typo_primary};
         background-color: ${forms?.field_background};
         border-width: ${forms?.field_border_width};
         border-color: ${colors?.form_base_border};
         outline: none;
-        height: ${forms?.field_height};
-        border-radius: 0;
+        height: ${global?.control_height_large};
+        border-radius: ${global?.border_radius};
         &:hover {
             border-color: ${colors?.form_hover_border};
             z-index: 6;
@@ -50,11 +50,19 @@ export const SInputStyle = styled.div`
 `;
 
 export const SLabelStyle = styled.label`
-    display: inline-block;
-    font-weight: ${fonts?.fw_medium};
-    color: ${colors?.typo_primary};
-    font-size: ${fonts?.fs_16};
-    margin-bottom: 8px;
-    z-index: 1;
+    top: 16px;
+    left: calc(${forms?.field_spacing_h} + 2px);
+    position: absolute;
+    font-size: 1em;
     cursor: text;
+    color: ${colors?.typo_primary};
+    transition: all ${global?.transition} ease-out;
+    border-radius: 10px;
+    padding: 0;
+    z-index: 10;
+    pointer-events: none;
+    .focus & {
+        top: 8px;
+        font-size: 0.78em;
+    }
 `;

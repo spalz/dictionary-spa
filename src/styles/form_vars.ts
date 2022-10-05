@@ -4,7 +4,6 @@ import { colors, global, fonts } from "@styles/vars";
 import { down } from "@config/breakpoints_vars";
 
 export const forms = {
-    field_height: "var(--field-height)",
     field_spacing_h: "var(--field-spacing-h)",
     field_spacing_v: "var(--field-spacing-v)",
     field_text_color: "var(--field-text-color)",
@@ -39,15 +38,11 @@ export const forms = {
 
 const FormVarsStyle = createGlobalStyle`
     :root {
-        --field-height: 62px;
-        ${down("sm")} {
-            --field-height: 52px;
-        }
-        --field-spacing-h: 20px;
+        --field-spacing-h: 18px;
         --field-spacing-v: 16px;
         --field-text-color: ${colors?.typo_primary};
         --field-placeholder-color: ${colors?.typo_placeholder};
-        --field-font-size: ${fonts?.fs_18};
+        --field-font-size: ${fonts?.fs_16};
         --field-font-weight: ${fonts?.fw_regular};
         --field-border-radius: ${global?.border_radius_big};
         --field-border-width: ${global?.border_width};

@@ -26,28 +26,6 @@ const FieldWrap: React.FC<FieldWrapProps> = ({ children, error }) => {
 
 const SFieldWrap = styled.div`
     position: relative;
-    .input_field {
-        margin-bottom: -2px;
-    }
-    &.icon {
-        .input_field {
-            padding-left: 56px;
-        }
-    }
-    &:first-of-type {
-        .input_field,
-        .input_field .SCildren > div > div {
-            border-top-left-radius: ${forms?.field_border_radius};
-            border-top-right-radius: ${forms?.field_border_radius};
-        }
-    }
-    &:last-of-type {
-        .input_field,
-        .input_field .SCildren > div > div {
-            border-bottom-left-radius: ${forms?.field_border_radius};
-            border-bottom-right-radius: ${forms?.field_border_radius};
-        }
-    }
 `;
 
 export default FieldWrap;

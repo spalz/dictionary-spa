@@ -1,8 +1,9 @@
 import React from "react";
 
+import { AuthWrap } from "@components/auth";
 import { Layout } from "@components/layout";
 import { LoginForm } from "@components/forms";
-import { getProviders } from "next-auth/react";
+import { getProviders, getCsrfToken } from "next-auth/react";
 
 interface LoginEmailProps {
     providers: Array<{
@@ -12,21 +13,26 @@ interface LoginEmailProps {
         signinUrl: string;
         type: string;
     }>;
+    csrfToken: string;
 }
 
-const LoginEmail: React.FC<LoginEmailProps> = ({ providers }) => {
+const LoginEmail: React.FC<LoginEmailProps> = ({ providers, csrfToken }) => {
     return (
         <Layout>
-            <LoginForm providers={providers} />
+            <AuthWrap title="Log in">
+                <LoginForm providers={providers} csrfToken={csrfToken} />
+            </AuthWrap>
         </Layout>
     );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
     const providers = await getProviders();
+    const csrfToken = await getCsrfToken(context);
     return {
         props: {
             providers,
+            csrfToken,
         },
     };
 }

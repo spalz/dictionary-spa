@@ -29,7 +29,7 @@ const FormTextariaField: React.FC<FormTextariaFieldProps> = ({
             <BaseFormField
                 id={id}
                 label={label}
-                className={CN({
+                classNames={CN({
                     disabled: disabled,
                 })}
             >

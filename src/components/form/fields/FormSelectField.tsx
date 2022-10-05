@@ -39,7 +39,7 @@ const FormSelectField: React.FC<FormSelectFieldProps> = ({
     return (
         <FieldWrap error={error}>
             <SFormSelectField className="input_field">
-                <BaseFormField id={id} {...rest}>
+                <BaseFormField classNames="ERRRRRR" id={id} {...rest}>
                     <Select
                         styles={selectStyles}
                         components={{

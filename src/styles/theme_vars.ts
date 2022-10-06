@@ -231,7 +231,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --form-hoverborder: #F05644;
             --form-basetypo: #FFFFFF;
             --form-basebg: #000000;
-            --form-baseborder: #E8E6EA;
+            --form-baseborder: #757377;
         }
         
         --color-barley-corn: #A77C60;

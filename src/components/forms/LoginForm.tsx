@@ -104,7 +104,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             render={({ field }) => {
                                 return (
                                     <FormInputField
-                                        id={tabindex.register + 2}
+                                        id={tabindex.login + 1}
                                         error={errors.identifier}
                                         type="email"
                                         label="Email"
@@ -120,7 +120,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             render={({ field }) => {
                                 return (
                                     <FormPasswordField
-                                        id={tabindex.register + 3}
+                                        id={tabindex.login + 2}
                                         error={errors.password}
                                         label="Password"
                                         {...field}
@@ -141,7 +141,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                     </Wrapper>
                     <Wrapper offset={["bottom-20"]}>
                         <ButtonForm
-                            tabIndex={tabindex.register + 4}
+                            tabIndex={tabindex.login + 3}
                             disabled={!isValid}
                             loading={isLoading}
                         >

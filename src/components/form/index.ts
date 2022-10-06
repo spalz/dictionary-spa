@@ -19,18 +19,8 @@ export { default as ProvidersList } from "./ProvidersList";
 export { default as ButtonForm } from "./ButtonForm";
 
 export const tabindex = {
-    forgot_password: 30,
-    reset_password: 40,
-
     login: 50,
-    register: 100,
-    new_password: 200,
-    change_password: 250,
-    personal_data: 300,
-    profile_settings: 350,
-    feedback: 400,
-    author: 450,
-    payment: 500,
-    lesson_reviews: 550,
-    course_reviews: 650,
+    register: 60,
+    forgot_password: 70,
+    reset_password: 80,
 };

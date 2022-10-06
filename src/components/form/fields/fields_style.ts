@@ -24,11 +24,9 @@ export const SInputStyle = styled.div`
         border-radius: ${global?.border_radius};
         &:hover {
             border-color: ${colors?.form_hover_border};
-            z-index: 6;
         }
         &:focus {
             border-color: ${colors?.form_hover_border};
-            z-index: 6;
         }
         &.error {
             color: ${colors?.typo_negative};

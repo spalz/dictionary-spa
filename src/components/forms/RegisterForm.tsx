@@ -19,7 +19,7 @@ import {
     AuthBottomLink,
     ProvidersList,
 } from "@components/form";
-import { AuthLoginR } from "@utils/routes";
+import { AuthLoginEmailR } from "@utils/routes";
 import {
     yup_username,
     yup_email,
@@ -166,7 +166,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                     <AuthBottomLink
                         text="Already have an account? "
                         title="Log in"
-                        href={AuthLoginR()}
+                        href={AuthLoginEmailR()}
                     />
                     <Wrapper offset={["top-20"]}>
                         <PersonalDataForm />

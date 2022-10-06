@@ -41,12 +41,16 @@ const HeaderAuth: React.FC<HeaderAuthProps> = ({ header_type }) => {
                 >
                     Sign up
                 </LinkButton>
-            ) : (
+            ) : header_type === "auth_login" ? (
                 <LinkButton
                     href={AuthLoginEmailR()}
                     size="small"
                     style="primary"
                 >
+                    Sign in
+                </LinkButton>
+            ) : (
+                <LinkButton href={AuthLoginR()} size="small" style="primary">
                     Sign in
                 </LinkButton>
             )}

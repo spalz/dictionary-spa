@@ -6,9 +6,9 @@ import { Wrapper } from "@components/layout";
 interface BlockFormProps {
     children: React.ReactNode;
     success: boolean;
-    success_icon: React.ReactNode;
-    success_title: string;
-    success_text: string;
+    success_icon?: React.ReactNode;
+    success_title?: string;
+    success_text?: string;
 }
 
 const BlockForm: React.FC<BlockFormProps> = ({

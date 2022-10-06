@@ -83,9 +83,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         return user;
                     }
                     return null;
-                } catch (error) {
-                    console.log(error);
-                    return false;
+                } catch (error: any) {
+                    throw new Error(JSON.stringify(error.response.data));
                 }
             },
         }),
@@ -125,9 +124,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         return user;
                     }
                     return null;
-                } catch (error) {
-                    console.log(error);
-                    return false;
+                } catch (error: any) {
+                    throw new Error(JSON.stringify(error.response.data));
                 }
             },
         }),

@@ -20,7 +20,7 @@ import {
     AuthBottomLink,
     ProvidersList,
 } from "@components/form";
-import { AuthRegisterEmailR } from "@utils/routes";
+import { AuthRegisterEmailR, AuthRecoveryPasswordR } from "@utils/routes";
 import {
     yup_username,
     yup_email,
@@ -39,15 +39,13 @@ const FormSchema = () =>
         password: yup_password(),
     });
 
-const error = false;
-
 interface LoginFormProps {
     providers: Array<ProviderProps>;
     csrfToken: string;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
-    const [authError, setAuthError] = useState(false);
+    const [authError, setAuthError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const {
@@ -59,7 +57,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
         mode: "all",
     });
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: LoginFormValues) => {
         setIsLoading(true);
         signIn("login", {
             redirect: false,
@@ -67,17 +65,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
             password: data.password,
             callbackUrl: `${window.location.origin}`,
         })
-            .then((res: any) => {
-                if (res.ok && res.status === 200) {
+            .then((res) => {
+                if (res?.ok && res?.status === 200 && res.url) {
                     router.push(res.url);
                 } else {
                     return res;
                 }
             })
-            .then((err) => {
-                if (!err?.ok) {
+            .then((error) => {
+                if (error?.ok === false) {
+                    const error_text = JSON.parse(error.error || "");
                     setIsLoading(false);
-                    setAuthError(true);
+                    setAuthError(error_text.error.message);
                 }
             });
     };
@@ -96,9 +95,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                     success_title="Success title"
                     success_text="Success text"
                 >
-                    {authError ? (
-                        <InfoForm>Invalid username or password.</InfoForm>
-                    ) : null}
+                    {authError ? <InfoForm>{authError}</InfoForm> : null}
 
                     <ProvidersList providers={providers} compact />
 
@@ -133,6 +130,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             control={control}
                         />
                     </div>
+                    <Wrapper offset={["bottom-10"]}>
+                        <AuthBottomLink
+                            secondary
+                            title="Forgot your password?"
+                            href={AuthRecoveryPasswordR()}
+                        />
+                    </Wrapper>
                     <Wrapper offset={["bottom-20"]}>
                         <ButtonForm
                             tabIndex={tabindex.register + 4}

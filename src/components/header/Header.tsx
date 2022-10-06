@@ -9,17 +9,22 @@ import {
     HeaderMenu,
 } from "@components/header";
 import { Container } from "@components/layout";
-import { down } from "@config/breakpoints_vars";
-import { fonts, global, colors } from "@styles/vars";
+import { global, colors } from "@styles/vars";
 
-let Header = () => {
+export type HEADER_TYPES = "default" | "auth_login" | "auth_register";
+
+export interface HeaderProps {
+    header_type?: HEADER_TYPES;
+}
+
+let Header: React.FC<HeaderProps> = ({ header_type = "default" }) => {
     return (
         <SHeader>
             <Container>
                 <SBlock>
                     <HeaderLogo />
-                    <HeaderMenu />
-                    <HeaderAuth />
+                    {header_type === "default" && <HeaderMenu />}
+                    <HeaderAuth header_type={header_type} />
                     <HeaderTheme />
                 </SBlock>
             </Container>

@@ -51,7 +51,7 @@ const SItem = styled.a`
     cursor: pointer;
     transition: color ${global?.transition};
     cursor: pointer;
-    color: ${colors?.typo_secondary};
+    color: ${colors?.typo_primary};
     border: ${global.border_width} solid ${colors.form_base_border};
     margin-bottom: ${spacings.offset_10};
     border-radius: ${global.border_radius};
@@ -59,6 +59,7 @@ const SItem = styled.a`
     flex: 1;
     &:hover {
         color: ${colors?.typo_interactive};
+        border-color: ${colors?.form_hover_border};
     }
     .compact & {
         margin-bottom: 0;
@@ -123,6 +124,7 @@ const SList = styled.div`
 `;
 const SOr = styled.div`
     margin: ${spacings.offset_10} 0;
+    color: ${colors?.typo_secondary};
 `;
 
 export default ProvidersList;

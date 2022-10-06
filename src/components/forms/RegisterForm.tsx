@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 // import { DevTool } from "@hookform/devtools";
 
 import { IconNight } from "@components/icons";
@@ -49,17 +51,49 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     providers,
     csrfToken,
 }) => {
+    const [authError, setAuthError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
+
     const {
         control,
+        handleSubmit,
         formState: { errors, isValid },
     } = useForm<RegisterFormValues>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
+    const onSubmit = (data: RegisterFormValues) => {
+        setIsLoading(true);
+        signIn("register", {
+            redirect: false,
+            username: data.username,
+            email: data.email,
+            password: data.password,
+            callbackUrl: `${window.location.origin}`,
+        })
+            .then((res) => {
+                if (res?.ok && res?.status === 200 && res.url) {
+                    router.push(res.url);
+                    return res;
+                } else {
+                    return res;
+                }
+            })
+            .then((error) => {
+                if (error?.ok === false) {
+                    const error_text = JSON.parse(error.error || "");
+                    setIsLoading(false);
+                    setAuthError(error_text.error.message);
+                }
+            });
+    };
+
     return (
         <>
-            <form action="/api/auth/callback/register" method="post">
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="hidden"
                     defaultValue={csrfToken}
@@ -73,7 +107,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                 >
                     <ProvidersList providers={providers} compact />
 
-                    {error ? <InfoForm>error</InfoForm> : null}
+                    {authError ? <InfoForm>{authError}</InfoForm> : null}
                     <div>
                         <Controller
                             render={({ field }) => (
@@ -121,6 +155,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                         <ButtonForm
                             tabIndex={tabindex.register + 4}
                             disabled={!isValid}
+                            loading={isLoading}
                         >
                             Register
                         </ButtonForm>

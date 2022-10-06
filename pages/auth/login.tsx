@@ -13,7 +13,7 @@ interface LoginPageProps {
 
 const LoginPage: React.FC<LoginPageProps> = ({ providers }) => {
     return (
-        <Layout>
+        <Layout header_type="auth_register">
             <AuthWrap title="Log in">
                 <ProvidersList providers={providers} />
             </AuthWrap>

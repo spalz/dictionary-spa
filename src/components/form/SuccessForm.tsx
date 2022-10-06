@@ -6,9 +6,9 @@ import { down } from "@config/breakpoints_vars";
 import { colors, fonts, spacings } from "@styles/vars";
 
 interface SuccessFormProps {
-    icon: React.ReactNode;
-    title: string;
-    text: string;
+    icon?: React.ReactNode;
+    title?: string;
+    text?: string;
 }
 
 const SuccessForm: React.FC<SuccessFormProps> = ({ icon, title, text }) => {

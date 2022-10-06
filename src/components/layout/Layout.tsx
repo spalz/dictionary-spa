@@ -2,16 +2,18 @@ import React from "react";
 import styled from "styled-components";
 
 import { Header } from "@components/header";
+import { HEADER_TYPES } from "@components/header/Header";
 import { spacings, global } from "@styles/vars";
 
 interface Layout {
     children: React.ReactNode;
+    header_type?: HEADER_TYPES;
 }
 
-const Layout: React.FC<Layout> = ({ children }) => {
+const Layout: React.FC<Layout> = ({ children, header_type }) => {
     return (
         <SLayout>
-            <Header />
+            <Header header_type={header_type} />
             <SMain>{children}</SMain>
         </SLayout>
     );

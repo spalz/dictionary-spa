@@ -4,9 +4,8 @@ import { UrlObject } from "url";
 declare type Url = string | UrlObject;
 
 import { Link } from "@components/elements";
-// import { down } from "@config/breakpoints_vars";
 import { colors, spacings } from "@styles/vars";
-import { MainR } from "@utils/routes";
+import { MainR, FaqR } from "@utils/routes";
 
 interface HeaderMenuItemProps {
     title: string;
@@ -35,7 +34,7 @@ const HeaderMenu = () => {
         <SHeaderMenu>
             <SList>
                 <HeaderMenuItem href={MainR()} title="My words" />
-                <HeaderMenuItem href={"/faq"} title="Faq" />
+                <HeaderMenuItem href={FaqR()} title="Faq" />
             </SList>
         </SHeaderMenu>
     );

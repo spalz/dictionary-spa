@@ -18,7 +18,7 @@ interface LoginEmailProps {
 
 const LoginEmail: React.FC<LoginEmailProps> = ({ providers, csrfToken }) => {
     return (
-        <Layout>
+        <Layout header_type="auth_register">
             <AuthWrap title="Log in">
                 <LoginForm providers={providers} csrfToken={csrfToken} />
             </AuthWrap>

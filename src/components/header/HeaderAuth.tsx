@@ -3,10 +3,16 @@ import { useSession, signOut } from "next-auth/react";
 
 import { BaseButton } from "@components/elements";
 import { spacings, fonts } from "@styles/vars";
-import { AuthLoginR } from "@utils/routes";
+import { AuthLoginEmailR, AuthLoginR, AuthRegisterEmailR } from "@utils/routes";
 import { LinkButton } from "@components/elements";
 
-const HeaderAuth = () => {
+import { HEADER_TYPES } from "@components/header/Header";
+
+export interface HeaderAuthProps {
+    header_type?: HEADER_TYPES;
+}
+
+const HeaderAuth: React.FC<HeaderAuthProps> = ({ header_type }) => {
     const { data: session } = useSession();
 
     if (session) {
@@ -16,7 +22,9 @@ const HeaderAuth = () => {
                 <BaseButton
                     size="small"
                     style="ghost_stroke"
-                    onClick={() => signOut()}
+                    onClick={() =>
+                        signOut({ callbackUrl: `${window.location.origin}` })
+                    }
                 >
                     Sign out
                 </BaseButton>
@@ -25,9 +33,23 @@ const HeaderAuth = () => {
     }
     return (
         <SHeaderAuth>
-            <LinkButton href={AuthLoginR()} size="small" style="primary">
-                Sign in
-            </LinkButton>
+            {header_type === "auth_register" ? (
+                <LinkButton
+                    href={AuthRegisterEmailR()}
+                    size="small"
+                    style="primary"
+                >
+                    Sign up
+                </LinkButton>
+            ) : (
+                <LinkButton
+                    href={AuthLoginEmailR()}
+                    size="small"
+                    style="primary"
+                >
+                    Sign in
+                </LinkButton>
+            )}
         </SHeaderAuth>
     );
 };

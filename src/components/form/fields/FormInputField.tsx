@@ -1,6 +1,6 @@
 import React, { useState, FocusEvent } from "react";
 import CN from "classnames";
-import { FieldError, ChangeHandler } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 import { FieldWrap, BaseFormField } from "@components/form";
 import { SInputStyle } from "./fields_style";
@@ -43,6 +43,7 @@ const FormInputField: React.FC<FormInputFieldProps> = React.forwardRef(
                     <SInputStyle>
                         <input
                             {...field}
+                            value={value}
                             disabled={disabled}
                             tabIndex={id}
                             type={type}

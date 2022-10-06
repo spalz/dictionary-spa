@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/devtools": "^4.2.2",
     "@hookform/resolvers": "^2.9.8",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/react-helmet": "^6.1.5",

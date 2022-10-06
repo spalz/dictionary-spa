@@ -19,9 +19,11 @@ export { default as ProvidersList } from "./ProvidersList";
 export { default as ButtonForm } from "./ButtonForm";
 
 export const tabindex = {
+    forgot_password: 30,
+    reset_password: 40,
+
     login: 50,
     register: 100,
-    recovery_password: 150,
     new_password: 200,
     change_password: 250,
     personal_data: 300,

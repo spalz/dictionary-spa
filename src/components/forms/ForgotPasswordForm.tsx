@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { FORGOT_PASSWORD } from "@config/urls";
+// import { DevTool } from "@hookform/devtools";
 
 import { Wrapper } from "@components/layout";
 import {
@@ -35,7 +36,8 @@ const ForgotPasswordForm = ({}) => {
     const {
         control,
         handleSubmit,
-        reset,
+        resetField,
+        setValue,
         formState: { errors, isValid },
     } = useForm<ForgotPasswordFormValues>({
         resolver: yupResolver(FormSchema()),
@@ -52,10 +54,9 @@ const ForgotPasswordForm = ({}) => {
                 }
             )
             .then((response) => {
-                console.log(response);
                 setSuccess(true);
                 setIsLoading(false);
-                reset();
+                resetField("email");
             })
             .catch((error) => {
                 setAuthError(error.response);
@@ -81,7 +82,7 @@ const ForgotPasswordForm = ({}) => {
                         render={({ field }) => {
                             return (
                                 <FormInputField
-                                    id={tabindex.recovery_password + 1}
+                                    id={tabindex.forgot_password + 1}
                                     error={errors.email}
                                     type="email"
                                     label="Email"
@@ -91,11 +92,12 @@ const ForgotPasswordForm = ({}) => {
                         }}
                         name="email"
                         control={control}
+                        defaultValue=""
                     />
                 </div>
                 <Wrapper offset={["bottom-20"]}>
                     <ButtonForm
-                        tabIndex={tabindex.recovery_password + 2}
+                        tabIndex={tabindex.forgot_password + 2}
                         disabled={!isValid}
                         loading={isLoading}
                     >
@@ -112,6 +114,7 @@ const ForgotPasswordForm = ({}) => {
                 </Wrapper>
             </BlockForm>
         </form>
+        // <DevTool control={control} />
     );
 };
 

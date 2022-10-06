@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { RESET_PASSWORD } from "@config/urls";
 
 // import { DevTool } from "@hookform/devtools";
 
@@ -48,7 +49,7 @@ const ResetPasswordForm = ({}) => {
         setIsLoading(true);
         axios
             .post(
-                `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/reset-password`,
+                `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${RESET_PASSWORD}`,
                 {
                     code: router.query.code,
                     password: data.new_password,
@@ -74,7 +75,6 @@ const ResetPasswordForm = ({}) => {
                         .then((err) => {
                             console.log(err);
                         });
-                    setIsLoading(false);
                 }
             })
             .catch((error) => {
@@ -100,7 +100,7 @@ const ResetPasswordForm = ({}) => {
                             render={({ field }) => {
                                 return (
                                     <FormPasswordField
-                                        id={tabindex.recovery_password + 1}
+                                        id={tabindex.reset_password + 1}
                                         error={errors.new_password}
                                         label="New password"
                                         {...field}
@@ -113,7 +113,7 @@ const ResetPasswordForm = ({}) => {
                     </div>
                     <Wrapper offset={["bottom-20"]}>
                         <ButtonForm
-                            tabIndex={tabindex.recovery_password + 2}
+                            tabIndex={tabindex.reset_password + 2}
                             disabled={!isValid}
                             loading={isLoading}
                         >

@@ -114,6 +114,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             }}
                             name="identifier"
                             control={control}
+                            defaultValue=""
                         />
                         <Controller
                             render={({ field }) => {
@@ -128,6 +129,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             }}
                             name="password"
                             control={control}
+                            defaultValue=""
                         />
                     </div>
                     <Wrapper offset={["bottom-10"]}>

@@ -120,6 +120,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                             )}
                             name="username"
                             control={control}
+                            defaultValue=""
                         />
                         <Controller
                             render={({ field }) => {
@@ -135,6 +136,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                             }}
                             name="email"
                             control={control}
+                            defaultValue=""
                         />
                         <Controller
                             render={({ field }) => {
@@ -149,6 +151,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                             }}
                             name="password"
                             control={control}
+                            defaultValue=""
                         />
                     </div>
                     <Wrapper offset={["bottom-20"]}>

@@ -18,6 +18,8 @@ interface Headline {
         | "bottom-40"
         | "top-20"
         | "bottom-20"
+        | "top-10"
+        | "bottom-10"
         | "top-0"
         | "bottom-0"
     >;
@@ -45,6 +47,7 @@ const Headline: React.FC<Headline> = ({
 
 const headline_style = css`
     line-height: 1.4;
+    margin: 0;
     &.size__tiny {
         font-size: ${fonts?.fs_18};
     }

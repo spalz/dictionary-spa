@@ -1,9 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
-import counterReducer from "./counterSlice";
+import tagReducer from "./slices/tags";
 
-export default configureStore({
-    reducer: {
-        counter: counterReducer,
-    },
+const reducer = {
+    tags: tagReducer,
+};
+
+const store = configureStore({
+    reducer: reducer,
+    devTools: true,
 });
+
+export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
+export type RootState = ReturnType<typeof store.getState>;
+
+export default store;

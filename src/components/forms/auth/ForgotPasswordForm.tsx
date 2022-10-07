@@ -86,6 +86,7 @@ const ForgotPasswordForm = ({}) => {
                                     error={errors.email}
                                     type="email"
                                     label="Email"
+                                    required={true}
                                     {...field}
                                 />
                             );

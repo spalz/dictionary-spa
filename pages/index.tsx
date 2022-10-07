@@ -4,9 +4,6 @@ import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-import { useSelector, useDispatch } from "react-redux";
-import { decrement, increment } from "../src/app/counterSlice";
-
 import { BaseButton } from "@components/elements";
 import { Layout, Container } from "@components/layout";
 import { Categories, Tags } from "@components";
@@ -30,9 +27,6 @@ const Home: NextPage = () => {
     const [categorySelected, setCategorySelected] = useState<number | string>(
         "all"
     );
-
-    const count = useSelector((state: any) => state.counter.value);
-    const dispach = useDispatch();
 
     // console.group("next-auth session");
     // console.log("session:", session);
@@ -176,10 +170,6 @@ const Home: NextPage = () => {
             <Container>
                 {/* {isLoaded ?  <Loader bg={true} type="fixed" />} */}
                 {/* {isLoaded ? "true" : "false"} */}
-
-                <span onClick={() => dispach(decrement())}>-</span>
-                {count}
-                <span onClick={() => dispach(increment())}>+</span>
 
                 <br />
                 <br />

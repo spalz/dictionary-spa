@@ -8,6 +8,7 @@ interface BaseFormFieldProps {
     classNames: string;
     label?: string;
     children: React.ReactNode;
+    required?: boolean;
 }
 
 const BaseFormField: React.FC<BaseFormFieldProps> = ({
@@ -15,12 +16,16 @@ const BaseFormField: React.FC<BaseFormFieldProps> = ({
     label,
     classNames,
     children,
+    required,
 }) => {
     return (
         <SFormField className={classNames}>
             <SBlock>
                 {label ? (
-                    <SLabelStyle htmlFor={id?.toString()}>{label}</SLabelStyle>
+                    <SLabelStyle htmlFor={id?.toString()}>
+                        {label}
+                        {required && <span> *</span>}
+                    </SLabelStyle>
                 ) : null}
                 <SCildren>{children}</SCildren>
             </SBlock>

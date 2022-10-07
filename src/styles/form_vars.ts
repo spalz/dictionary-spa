@@ -44,7 +44,7 @@ const FormVarsStyle = createGlobalStyle`
         --field-placeholder-color: ${colors?.typo_placeholder};
         --field-font-size: ${fonts?.fs_16};
         --field-font-weight: ${fonts?.fw_regular};
-        --field-border-radius: ${global?.border_radius_big};
+        --field-border-radius: ${global?.border_radius};
         --field-border-width: ${global?.border_width};
         --field-border-color: ${colors?.form_base_border};
         --field-background: transparent;

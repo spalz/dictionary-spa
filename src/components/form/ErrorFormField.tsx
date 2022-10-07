@@ -3,10 +3,10 @@ import CN from "classnames";
 import styled from "styled-components";
 
 import { fonts, colors, global } from "@styles/vars";
-import { FieldError } from "react-hook-form";
+import { FieldError, ErrorOption } from "react-hook-form";
 
 interface ErrorProps {
-    error?: FieldError;
+    error?: FieldError | ErrorOption;
 }
 
 const Error: React.FC<ErrorProps> = ({ error }) => {
@@ -23,7 +23,7 @@ const Error: React.FC<ErrorProps> = ({ error }) => {
 
 interface ErrorFormFieldProps {
     children?: React.ReactNode;
-    error?: FieldError;
+    error?: FieldError | ErrorOption;
     align_error?: "top" | "bottom";
 }
 

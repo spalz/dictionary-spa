@@ -1,13 +1,13 @@
 import React from "react";
 import CN from "classnames";
 import styled from "styled-components";
-import { FieldError } from "react-hook-form";
+import { FieldError, ErrorOption } from "react-hook-form";
 
 import { ErrorFormField } from "@components/form";
 import { forms } from "@styles/vars";
 
 interface FieldWrapProps {
-    error?: FieldError;
+    error?: FieldError | ErrorOption;
     children: React.ReactNode;
 }
 

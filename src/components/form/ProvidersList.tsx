@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 import {
     IconGoogleColor,
@@ -8,7 +9,7 @@ import {
     IconTwitterColor,
 } from "@components/icons/auth";
 import { Link } from "@components/elements";
-import { colors, global, spacings } from "@styles/vars";
+import { colors, global, spacings, fonts } from "@styles/vars";
 import { signIn } from "next-auth/react";
 import { AuthLoginEmailR } from "@utils/routes";
 
@@ -16,11 +17,16 @@ import { ProviderProps } from "@interfaces/auth";
 
 interface ProvidersListItemProps {
     item: { name: string; id: string };
+    tabIndex: number;
 }
 
-const Item: React.FC<ProvidersListItemProps> = ({ item: { name, id } }) => {
+const Item: React.FC<ProvidersListItemProps> = ({
+    item: { name, id },
+    tabIndex,
+}) => {
     return (
         <SItem
+            tabIndex={tabIndex}
             onClick={() =>
                 signIn(id, {
                     callbackUrl: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/`,
@@ -45,30 +51,38 @@ const Item: React.FC<ProvidersListItemProps> = ({ item: { name, id } }) => {
     );
 };
 
-const SItem = styled.a`
+const SItem = styled.button`
     display: flex;
     align-items: center;
     cursor: pointer;
     transition: color ${global?.transition};
     cursor: pointer;
     color: ${colors?.typo_primary};
-    border: ${global.border_width} solid ${colors.form_base_border};
+    border: ${global?.border_width} solid ${colors?.form_base_border};
     margin-bottom: ${spacings.offset_10};
     border-radius: ${global.border_radius};
+    transition: all ${global?.transition};
     padding: 0.5em 0.5em;
     flex: 1;
+    background: none;
+    font-family: ${fonts.ff_base};
+    font-size: ${fonts?.fs_16};
+    width: 100%;
     &:hover {
-        color: ${colors?.typo_interactive};
+        border-color: ${colors?.form_hover_border};
+    }
+    &:focus,
+    &:active {
         border-color: ${colors?.form_hover_border};
     }
     .compact & {
+        justify-content: center;
         margin-bottom: 0;
     }
 `;
 
 const SIcon = styled.div`
     svg {
-        width: 22px;
         height: 22px;
     }
 `;
@@ -91,21 +105,30 @@ const ProvidersList: React.FC<ProvidersListProps> = ({
     providers,
     compact = false,
 }) => {
+    const router = useRouter();
+
     return (
         providers && (
             <SProvidersList>
                 <SList className={compact ? "compact" : ""}>
-                    {Object.values(providers).map((provider) => {
+                    {Object.values(providers).map((provider, idx) => {
                         if (provider.name !== "Credentials") {
-                            return <Item key={provider.name} item={provider} />;
+                            return (
+                                <Item
+                                    key={provider.name}
+                                    tabIndex={idx + 41}
+                                    item={provider}
+                                />
+                            );
                         }
                     })}
                     {!compact && (
-                        <Link href={AuthLoginEmailR()}>
-                            <SItem>
-                                <STitle>Continue with Email</STitle>
-                            </SItem>
-                        </Link>
+                        <SItem
+                            tabIndex={41}
+                            onClick={() => router.push(AuthLoginEmailR())}
+                        >
+                            <STitle>Continue with Email</STitle>
+                        </SItem>
                     )}
                 </SList>
                 {compact && <SOr>Or</SOr>}

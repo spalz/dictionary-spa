@@ -13,11 +13,22 @@ interface FormInputFieldProps {
     type?: "text" | "email";
     value: string | undefined;
     onBlur: ({ target }: { target: EventTarget | null }) => void;
+    required?: boolean;
 }
 
 const FormInputField: React.FC<FormInputFieldProps> = React.forwardRef(
     (
-        { id, label, disabled, error, type = "text", value, onBlur, ...field },
+        {
+            id,
+            label,
+            disabled,
+            error,
+            type = "text",
+            value,
+            onBlur,
+            required,
+            ...field
+        },
         ref
     ) => {
         const [focused, setFocus] = useState(false);
@@ -35,6 +46,7 @@ const FormInputField: React.FC<FormInputFieldProps> = React.forwardRef(
                 <BaseFormField
                     id={id}
                     label={label}
+                    required={required}
                     classNames={CN({
                         focus: focus,
                         disabled: disabled,

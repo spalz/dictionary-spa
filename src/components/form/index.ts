@@ -23,4 +23,7 @@ export const tabindex = {
     register: 60,
     forgot_password: 70,
     reset_password: 80,
+    //
+    word: 90,
+    tag: 100,
 };

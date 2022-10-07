@@ -65,6 +65,7 @@ export const colors = {
     form_checked_typo: "var(--form-checkedtypo)",
     form_negative_border: "var(--form-negativeborder)",
     form_negative_bg: "var(--form-negativebg)",
+    form_hover_negative_bg: "var(--form-hover_negativebg)",
     form_negative_typo: "var(--form-negativetypo)",
     form_positive_border: "var(--form-positiveborder)",
     form_positive_bg: "var(--form-positivebg)",
@@ -193,6 +194,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --form-checkedtypo: #F4ECA4;
             --form-negativeborder: #EB5757;
             --form-negativebg: #EB5757;
+            --form-hover_negativebg: ${lighten(0.05, "#EB5757")};
             --form-negativetypo: #FFFFFF;
             --form-positiveborder: #5B8B6C;
             --form-positivebg: #5B8B6C;

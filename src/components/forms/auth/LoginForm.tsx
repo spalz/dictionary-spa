@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+
 // import { DevTool } from "@hookform/devtools";
 
 import { IconNight } from "@components/icons";
@@ -19,7 +20,7 @@ import {
     AuthBottomLink,
     ProvidersList,
 } from "@components/form";
-import { AuthLoginEmailR } from "@utils/routes";
+import { AuthRegisterEmailR, AuthRecoveryPasswordR } from "@utils/routes";
 import {
     yup_username,
     yup_email,
@@ -27,57 +28,46 @@ import {
 } from "@components/form/yup_fields";
 import { ProviderProps } from "@interfaces/auth";
 
-type RegisterFormValues = {
-    username: string;
-    email: string;
+type LoginFormValues = {
+    identifier: string;
     password: string;
 };
 
 const FormSchema = () =>
     Yup.object().shape({
-        username: yup_username(),
-        email: yup_email(),
+        identifier: yup_email(),
         password: yup_password(),
     });
 
-const error = false;
-
-interface RegisterFormProps {
+interface LoginFormProps {
     providers: Array<ProviderProps>;
     csrfToken: string;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({
-    providers,
-    csrfToken,
-}) => {
+const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
     const [authError, setAuthError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-
     const router = useRouter();
-
     const {
         control,
         handleSubmit,
         formState: { errors, isValid },
-    } = useForm<RegisterFormValues>({
+    } = useForm<LoginFormValues>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
-    const onSubmit = (data: RegisterFormValues) => {
+    const onSubmit = (data: LoginFormValues) => {
         setIsLoading(true);
-        signIn("register", {
+        signIn("login", {
             redirect: false,
-            username: data.username,
-            email: data.email,
+            identifier: data.identifier,
             password: data.password,
             callbackUrl: `${window.location.origin}`,
         })
             .then((res) => {
                 if (res?.ok && res?.status === 200 && res.url) {
                     router.push(res.url);
-                    return res;
                 } else {
                     return res;
                 }
@@ -105,36 +95,25 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                     success_title="Success title"
                     success_text="Success text"
                 >
+                    {authError ? <InfoForm>{authError}</InfoForm> : null}
+
                     <ProvidersList providers={providers} compact />
 
-                    {authError ? <InfoForm>{authError}</InfoForm> : null}
                     <div>
-                        <Controller
-                            render={({ field }) => (
-                                <FormInputField
-                                    id={tabindex.register + 1}
-                                    error={errors.username}
-                                    label="Name"
-                                    {...field}
-                                />
-                            )}
-                            name="username"
-                            control={control}
-                            defaultValue=""
-                        />
                         <Controller
                             render={({ field }) => {
                                 return (
                                     <FormInputField
-                                        id={tabindex.register + 2}
-                                        error={errors.email}
+                                        id={tabindex.login + 1}
+                                        error={errors.identifier}
                                         type="email"
                                         label="Email"
+                                        required={true}
                                         {...field}
                                     />
                                 );
                             }}
-                            name="email"
+                            name="identifier"
                             control={control}
                             defaultValue=""
                         />
@@ -142,9 +121,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                             render={({ field }) => {
                                 return (
                                     <FormPasswordField
-                                        id={tabindex.register + 3}
+                                        id={tabindex.login + 2}
                                         error={errors.password}
                                         label="Password"
+                                        required={true}
                                         {...field}
                                     />
                                 );
@@ -154,19 +134,26 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                             defaultValue=""
                         />
                     </div>
+                    <Wrapper offset={["bottom-10"]}>
+                        <AuthBottomLink
+                            secondary
+                            title="Forgot your password?"
+                            href={AuthRecoveryPasswordR()}
+                        />
+                    </Wrapper>
                     <Wrapper offset={["bottom-20"]}>
                         <ButtonForm
-                            tabIndex={tabindex.register + 4}
+                            tabIndex={tabindex.login + 3}
                             disabled={!isValid}
                             loading={isLoading}
                         >
-                            Register
+                            Log in
                         </ButtonForm>
                     </Wrapper>
                     <AuthBottomLink
-                        text="Already have an account? "
-                        title="Log in"
-                        href={AuthLoginEmailR()}
+                        text="No account? "
+                        title="Sign up"
+                        href={AuthRegisterEmailR()}
                     />
                     <Wrapper offset={["top-20"]}>
                         <PersonalDataForm />
@@ -178,4 +165,4 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     );
 };
 
-export default RegisterForm;
+export default LoginForm;

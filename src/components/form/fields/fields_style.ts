@@ -14,7 +14,7 @@ export const SInputStyle = styled.div`
         font-weight: ${forms?.field_font_weight};
         font-size: ${forms?.field_font_size};
         transition: all ${global?.transition} ease;
-        padding: 1em ${forms?.field_spacing_h} 0;
+        padding: 1.1em ${forms?.field_spacing_h} 0;
         color: ${colors?.typo_primary};
         background-color: ${forms?.field_background};
         border-width: ${forms?.field_border_width};
@@ -22,9 +22,7 @@ export const SInputStyle = styled.div`
         outline: none;
         height: ${global?.control_height_large};
         border-radius: ${global?.border_radius};
-        &:hover {
-            border-color: ${colors?.form_hover_border};
-        }
+        &:hover,
         &:focus {
             border-color: ${colors?.form_hover_border};
         }
@@ -62,5 +60,8 @@ export const SLabelStyle = styled.label`
     .focus & {
         top: 8px;
         font-size: 0.78em;
+    }
+    span {
+        color: ${colors?.typo_negative};
     }
 `;

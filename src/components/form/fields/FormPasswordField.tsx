@@ -16,11 +16,22 @@ interface FormPasswordFieldProps {
     error?: FieldError;
     value: string | undefined;
     onBlur: ({ target }: { target: EventTarget | null }) => void;
+    required?: boolean;
 }
 
 const FormPasswordField: React.FC<FormPasswordFieldProps> = React.forwardRef(
     (
-        { id, label, disabled, className, error, onBlur, value, ...props },
+        {
+            id,
+            label,
+            disabled,
+            className,
+            error,
+            onBlur,
+            value,
+            required,
+            ...props
+        },
         ref
     ) => {
         const [passwordShow, setPasswordShow] = useState(true);
@@ -44,6 +55,7 @@ const FormPasswordField: React.FC<FormPasswordFieldProps> = React.forwardRef(
                 <BaseFormField
                     id={id}
                     label={label}
+                    required={required}
                     classNames={CN({
                         focus: focus,
                         disabled: disabled,

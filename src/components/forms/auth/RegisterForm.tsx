@@ -4,7 +4,6 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-
 // import { DevTool } from "@hookform/devtools";
 
 import { IconNight } from "@components/icons";
@@ -20,7 +19,7 @@ import {
     AuthBottomLink,
     ProvidersList,
 } from "@components/form";
-import { AuthRegisterEmailR, AuthRecoveryPasswordR } from "@utils/routes";
+import { AuthLoginEmailR } from "@utils/routes";
 import {
     yup_username,
     yup_email,
@@ -28,46 +27,55 @@ import {
 } from "@components/form/yup_fields";
 import { ProviderProps } from "@interfaces/auth";
 
-type LoginFormValues = {
-    identifier: string;
+type RegisterFormValues = {
+    username: string;
+    email: string;
     password: string;
 };
 
 const FormSchema = () =>
     Yup.object().shape({
-        identifier: yup_email(),
+        username: yup_username(),
+        email: yup_email(),
         password: yup_password(),
     });
 
-interface LoginFormProps {
+interface RegisterFormProps {
     providers: Array<ProviderProps>;
     csrfToken: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({
+    providers,
+    csrfToken,
+}) => {
     const [authError, setAuthError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+
     const router = useRouter();
+
     const {
         control,
         handleSubmit,
         formState: { errors, isValid },
-    } = useForm<LoginFormValues>({
+    } = useForm<RegisterFormValues>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
-    const onSubmit = (data: LoginFormValues) => {
+    const onSubmit = (data: RegisterFormValues) => {
         setIsLoading(true);
-        signIn("login", {
+        signIn("register", {
             redirect: false,
-            identifier: data.identifier,
+            username: data.username,
+            email: data.email,
             password: data.password,
             callbackUrl: `${window.location.origin}`,
         })
             .then((res) => {
                 if (res?.ok && res?.status === 200 && res.url) {
                     router.push(res.url);
+                    return res;
                 } else {
                     return res;
                 }
@@ -95,24 +103,38 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                     success_title="Success title"
                     success_text="Success text"
                 >
-                    {authError ? <InfoForm>{authError}</InfoForm> : null}
-
                     <ProvidersList providers={providers} compact />
 
+                    {authError ? <InfoForm>{authError}</InfoForm> : null}
                     <div>
+                        <Controller
+                            render={({ field }) => (
+                                <FormInputField
+                                    id={tabindex.register + 1}
+                                    error={errors.username}
+                                    label="Name"
+                                    required={true}
+                                    {...field}
+                                />
+                            )}
+                            name="username"
+                            control={control}
+                            defaultValue=""
+                        />
                         <Controller
                             render={({ field }) => {
                                 return (
                                     <FormInputField
-                                        id={tabindex.login + 1}
-                                        error={errors.identifier}
+                                        id={tabindex.register + 2}
+                                        error={errors.email}
                                         type="email"
                                         label="Email"
+                                        required={true}
                                         {...field}
                                     />
                                 );
                             }}
-                            name="identifier"
+                            name="email"
                             control={control}
                             defaultValue=""
                         />
@@ -120,9 +142,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             render={({ field }) => {
                                 return (
                                     <FormPasswordField
-                                        id={tabindex.login + 2}
+                                        id={tabindex.register + 3}
                                         error={errors.password}
                                         label="Password"
+                                        required={true}
                                         {...field}
                                     />
                                 );
@@ -132,26 +155,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                             defaultValue=""
                         />
                     </div>
-                    <Wrapper offset={["bottom-10"]}>
-                        <AuthBottomLink
-                            secondary
-                            title="Forgot your password?"
-                            href={AuthRecoveryPasswordR()}
-                        />
-                    </Wrapper>
                     <Wrapper offset={["bottom-20"]}>
                         <ButtonForm
-                            tabIndex={tabindex.login + 3}
+                            tabIndex={tabindex.register + 4}
                             disabled={!isValid}
                             loading={isLoading}
                         >
-                            Log in
+                            Register
                         </ButtonForm>
                     </Wrapper>
                     <AuthBottomLink
-                        text="No account? "
-                        title="Sign up"
-                        href={AuthRegisterEmailR()}
+                        text="Already have an account? "
+                        title="Log in"
+                        href={AuthLoginEmailR()}
                     />
                     <Wrapper offset={["top-20"]}>
                         <PersonalDataForm />
@@ -163,4 +179,4 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
     );
 };
 
-export default LoginForm;
+export default RegisterForm;

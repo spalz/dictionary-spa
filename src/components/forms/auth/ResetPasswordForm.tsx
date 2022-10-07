@@ -103,6 +103,7 @@ const ResetPasswordForm = ({}) => {
                                         id={tabindex.reset_password + 1}
                                         error={errors.new_password}
                                         label="New password"
+                                        required={true}
                                         {...field}
                                     />
                                 );

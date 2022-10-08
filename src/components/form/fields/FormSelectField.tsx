@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import CN from "classnames";
 import { ErrorOption } from "react-hook-form";
-import Select, {
-    components,
-    DropdownIndicatorProps,
-    InputActionMeta,
-    OnChangeValue,
-    ActionMeta,
-} from "react-select";
+import { components, DropdownIndicatorProps } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 import { IconTop } from "@components/icons/arrows";
@@ -67,6 +61,8 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
         },
         ref
     ) => {
+        const [defaultValue, setDefaultVelue] = useState<any>(null);
+
         const [focused, setFocus] = useState(false);
         const onFocus = () => {
             setFocus(true);
@@ -77,6 +73,14 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
         };
         const value_fill = value !== undefined && value?.length !== 0;
         const focus = !!(focused || value_fill);
+
+        useEffect(() => {
+            setTimeout(() => {
+                if (!loading) {
+                    setDefaultVelue(value);
+                }
+            }, 20);
+        }, []);
 
         return (
             <FieldWrap error={error}>
@@ -92,6 +96,7 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
                     >
                         <CreatableSelect
                             {...rest}
+                            key={defaultValue}
                             tabIndex={id}
                             styles={selectStyles}
                             components={{
@@ -109,6 +114,7 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
                             noOptionsMessage={() => noOptionsMessage}
                             onCreateOption={onCreateOption}
                             isClearable={isClearable}
+                            defaultValue={defaultValue}
                         />
                     </BaseFormField>
                 </SFormSelectField>

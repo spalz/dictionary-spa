@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { position } from "polished";
+import { useDeleteWordMutation } from "@redux";
 
+import { WordForm } from "@components/forms";
 import { WordProps } from "@interfaces";
 import Speech from "@components/Speech";
 import { IconEdit, IconDelete } from "@icons";
@@ -10,44 +12,79 @@ import { colors, fonts, spacings, global } from "@styles/vars";
 import { reset_button_style } from "@components/elements/button/button_styles";
 
 const Word: React.FC<WordProps> = ({
-    attributes: { word, translation, example, example_traslation },
+    id,
+    attributes,
+    attributes: {
+        word,
+        translation,
+        example,
+        example_traslation,
+        category,
+        tags,
+    },
 }) => {
+    const [deleteWord] = useDeleteWordMutation();
+    const [edit, setEdit] = useState<boolean>(false);
+
+    const toggleEdit = () => {
+        setEdit(!edit);
+    };
+
     return (
-        <SWord>
-            <SBlock>
-                <SWordEnglish>
-                    <Speech text={word} />
-                    <SWordEnglishText>
-                        <span>{word}</span>
-                        <STooltip>
-                            <STooltipBlock>{translation}</STooltipBlock>
-                            <STooltipSArrow />
-                        </STooltip>
-                    </SWordEnglishText>
-                </SWordEnglish>
-                <SExample>
-                    {example}
-                    {example_traslation ? (
-                        <STooltip>
-                            <STooltipBlock>{example_traslation}</STooltipBlock>
-                            <STooltipSArrow />
-                        </STooltip>
-                    ) : null}
-                </SExample>
-                <SActions>
-                    <button style={reset_button_style}>
-                        <SAction onClick={() => console.log("edit")}>
-                            <IconEdit />
-                        </SAction>
-                    </button>
-                    <button style={reset_button_style}>
-                        <SAction onClick={() => console.log("add")}>
-                            <IconDelete />
-                        </SAction>
-                    </button>
-                </SActions>
-            </SBlock>
-        </SWord>
+        <>
+            <SWord>
+                <SBlock>
+                    <SWordEnglish>
+                        <Speech text={word} />
+                        <SWordEnglishText>
+                            <span>{word}</span>
+                            <STooltip>
+                                <STooltipBlock>{translation}</STooltipBlock>
+                                <STooltipSArrow />
+                            </STooltip>
+                        </SWordEnglishText>
+                    </SWordEnglish>
+                    <SExample>
+                        {example}
+                        {example_traslation ? (
+                            <STooltip>
+                                <STooltipBlock>
+                                    {example_traslation}
+                                </STooltipBlock>
+                                <STooltipSArrow />
+                            </STooltip>
+                        ) : null}
+                    </SExample>
+                    <SActions>
+                        <button style={reset_button_style}>
+                            <SAction
+                                onClick={() => toggleEdit()}
+                                className={edit ? "active" : ""}
+                            >
+                                <IconEdit />
+                            </SAction>
+                        </button>
+                        <button
+                            style={reset_button_style}
+                            onClick={() => deleteWord(id)}
+                        >
+                            <SAction onClick={() => console.log("add")}>
+                                <IconDelete />
+                            </SAction>
+                        </button>
+                    </SActions>
+                </SBlock>
+            </SWord>
+            {edit ? (
+                <WordForm
+                    type="edit"
+                    defaultValues={{
+                        id,
+                        attributes,
+                    }}
+                />
+            ) : null}
+        </>
     );
 };
 
@@ -125,19 +162,23 @@ const SActions = styled.div`
     display: flex;
     gap: ${spacings?.offset_10};
     margin-left: auto;
-    opacity: 0;
-    transition: all ${global.transition} ease-in-out;
-    ${SBlock}:hover & {
-        opacity: 1;
-    }
 `;
 const SAction = styled.div`
     display: block;
     padding: 0.5em;
     cursor: pointer;
     color: ${colors?.typo_secondary};
+    opacity: 0;
+    transition: all ${global.transition} ease-in-out;
+    ${SBlock}:hover & {
+        opacity: 1;
+    }
     &:hover {
         color: ${colors.typo_link};
+    }
+    &.active {
+        color: ${colors.typo_negative};
+        opacity: 1;
     }
     svg {
         width: 1em;

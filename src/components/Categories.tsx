@@ -27,20 +27,28 @@ const Categories: React.FC<Categories> = ({
                 >
                     All category
                 </SCategoryItem>
-                {categories?.map((category: CategoryProps) => (
-                    <SCategoryItem
-                        key={category.id}
-                        className={CN({
-                            active: category.id === categorySelected,
-                        })}
-                        onClick={() => onClickCategory(category.id)}
-                    >
-                        {category.attributes.title}
-                        {category?.attributes?.words ? (
-                            <span>{category.attributes.words.data.length}</span>
-                        ) : null}
-                    </SCategoryItem>
-                ))}
+                {categories
+                    ?.filter((i) => {
+                        if (i.attributes.words.data.length > 0) {
+                            return i;
+                        }
+                    })
+                    .map((category: CategoryProps) => (
+                        <SCategoryItem
+                            key={category.id}
+                            className={CN({
+                                active: category.id === categorySelected,
+                            })}
+                            onClick={() => onClickCategory(category.id)}
+                        >
+                            {category.attributes.title} {category.id}
+                            {category?.attributes?.words ? (
+                                <span>
+                                    {category.attributes.words.data.length}
+                                </span>
+                            ) : null}
+                        </SCategoryItem>
+                    ))}
                 <SCategoryItem
                     className="add"
                     onClick={() => console.log("add tag")}

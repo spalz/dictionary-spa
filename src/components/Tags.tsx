@@ -9,6 +9,7 @@ interface Tags {
     tags?: Array<TagProps>;
     onClickTag: (id: number | string) => void;
     tagSelected: number | string;
+    isLoading?: boolean;
 }
 
 const Categories: React.FC<Tags> = ({ tags, onClickTag, tagSelected }) => {
@@ -21,15 +22,23 @@ const Categories: React.FC<Tags> = ({ tags, onClickTag, tagSelected }) => {
                 >
                     All
                 </STagItem>
-                {tags?.map((category: TagProps) => (
-                    <STagItem
-                        key={category.id}
-                        className={CN({ active: category.id === tagSelected })}
-                        onClick={() => onClickTag(category.id)}
-                    >
-                        {category.attributes.title}
-                    </STagItem>
-                ))}
+                {tags
+                    ?.filter((i) => {
+                        if (i.attributes.words.data.length > 0) {
+                            return i;
+                        }
+                    })
+                    .map((category: TagProps) => (
+                        <STagItem
+                            key={category.id}
+                            className={CN({
+                                active: category.id === tagSelected,
+                            })}
+                            onClick={() => onClickTag(category.id)}
+                        >
+                            {category.attributes.title} {category.id}
+                        </STagItem>
+                    ))}
                 <STagItem
                     className="add"
                     onClick={() => console.log("add tag")}

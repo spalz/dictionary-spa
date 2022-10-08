@@ -23,7 +23,7 @@ const SLayout = styled.div`
     min-height: 100vh;
 `;
 const SMain = styled.main`
-    margin: 0 0 ${spacings?.offset_120} 0;
+    padding: ${spacings?.offset_20} 0 ${spacings?.offset_120} 0;
     min-height: calc(100vh - ${global?.header_height});
 `;
 

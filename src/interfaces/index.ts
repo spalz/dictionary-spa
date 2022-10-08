@@ -10,8 +10,8 @@ export interface WordAttributesProps {
     translation: string;
     example?: string;
     example_traslation?: string;
-    categories?: {
-        data: Array<CategoryProps>;
+    category?: {
+        data: CategoryProps;
     };
     tags?: {
         data: Array<TagProps>;
@@ -37,4 +37,7 @@ export interface TagProps {
 
 export interface TagAttributesProps {
     title: string;
+    words: {
+        data: Array<WordAttributesProps>;
+    };
 }

@@ -113,7 +113,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --typo-interactive: #F05644;
         }
         .day, .day_important {
-            --bg-light: var(--bg-beige);
+            --bg-light: ${colors?.color_beige_day};
             --bg-warning-light: #F5EEDC;
             --bg-danger-light: #ECD7E3;
             --bg-success-light: #EBF3DA;
@@ -132,7 +132,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --bg-gradient-danger: linear-gradient(90deg, #FFFFFF 0%, rgba(247, 220, 220, 0.4) 100%);
         }
         .night {
-            --bg-light: #282421;
+            --bg-light: #282828;
             --bg-warning-light: #DEB54E;
             --bg-danger-light: #E67D89;
             --bg-success-light: #327C4A;

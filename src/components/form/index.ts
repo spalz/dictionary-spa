@@ -17,6 +17,7 @@ export { default as SuccessForm } from "./SuccessForm";
 export { default as PersonalDataForm } from "./PersonalDataForm";
 export { default as ProvidersList } from "./ProvidersList";
 export { default as ButtonForm } from "./ButtonForm";
+export * from "./fields/fields_style";
 
 export const tabindex = {
     login: 50,
@@ -26,4 +27,5 @@ export const tabindex = {
     //
     word: 90,
     tag: 100,
+    cat: 120,
 };

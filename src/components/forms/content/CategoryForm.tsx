@@ -21,6 +21,10 @@ const FormSchema = () =>
         title: yup_string_required("Title"),
     });
 
+type CategoryFormValues = {
+    title: string;
+};
+
 const CategoryForm = () => {
     const [addCategory, {}] = useAddCategoryMutation();
 
@@ -29,13 +33,12 @@ const CategoryForm = () => {
         handleSubmit,
         reset,
         formState: { errors, isValid },
-    } = useForm<TagAttributesProps>({
+    } = useForm<CategoryFormValues>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
-    const onSubmit = (data: TagAttributesProps) => {
-        console.log(data);
+    const onSubmit = (data: CategoryFormValues) => {
         addCategory({ data: data }).unwrap();
         reset();
     };
@@ -47,16 +50,16 @@ const CategoryForm = () => {
                         render={({ field }) => {
                             return (
                                 <FormInputField
-                                    id={tabindex.word + 1}
+                                    id={tabindex.cat + 1}
                                     error={errors.title}
                                     label="Category name"
+                                    required={true}
                                     {...field}
                                 />
                             );
                         }}
                         name="title"
                         control={control}
-                        defaultValue=""
                     />
                 </div>
 

@@ -21,6 +21,10 @@ const FormSchema = () =>
         title: yup_string_required("Title"),
     });
 
+type TagFormValues = {
+    title: string;
+};
+
 const TagForm = () => {
     const [addTag, {}] = useAddTagMutation();
 
@@ -29,13 +33,13 @@ const TagForm = () => {
         handleSubmit,
         reset,
         formState: { errors, isValid },
-    } = useForm<TagAttributesProps>({
+    } = useForm<TagFormValues>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
-    const onSubmit = (data: TagAttributesProps) => {
-        console.log(data);
+    const onSubmit = (data: TagFormValues) => {
+        // console.log(data);
         addTag({ data: data }).unwrap();
         reset();
     };

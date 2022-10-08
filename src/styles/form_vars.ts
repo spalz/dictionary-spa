@@ -47,7 +47,7 @@ const FormVarsStyle = createGlobalStyle`
         --field-border-radius: ${global?.border_radius};
         --field-border-width: ${global?.border_width};
         --field-border-color: ${colors?.form_base_border};
-        --field-background: transparent;
+        --field-background: ${colors?.bg_light};
         /* hover */
         --field-hover-border-color: var(--grey);
         /* focus */

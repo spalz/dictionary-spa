@@ -9,13 +9,13 @@ import {
 
 import { BaseButton } from "@components/elements";
 import { Layout, Container } from "@components/layout";
-import { Categories, Tags } from "@components";
-import { TagProps, CategoryProps, WordProps } from "@interfaces";
+import { Categories, Tags, WordList } from "@components";
+import { WordProps } from "@interfaces";
 import { colors, spacings } from "@styles/vars";
-
-import Word from "@components/Word";
+import { WordForm } from "@components/forms";
 
 const Home: NextPage = () => {
+    const [showWordForm, setShowWordForm] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
     const [pageCount, setPageCount] = useState<number>(1);
 
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
         "all"
     );
 
-    const { data: data_words } = useGetWordsQuery({
+    const { data: data_words, isLoading: isLoadingWords } = useGetWordsQuery({
         page: page,
         tag: tagSelected,
         category: categorySelected,
@@ -45,6 +45,10 @@ const Home: NextPage = () => {
         setTagsSelected(id);
     };
 
+    const toggleWordForm = () => {
+        setShowWordForm(!showWordForm);
+    };
+
     return (
         <Layout>
             <Container>
@@ -59,34 +63,37 @@ const Home: NextPage = () => {
 
                     <SMain>
                         <SMainTop>
-                            {categorySelected === "all" ? (
-                                <Tags
-                                    tags={data_tags?.data}
-                                    onClickTag={onClickTag}
-                                    tagSelected={tagSelected}
-                                />
-                            ) : null}
+                            <Tags
+                                tags={data_tags?.data}
+                                onClickTag={onClickTag}
+                                tagSelected={tagSelected}
+                            />
                             <SActions>
-                                <BaseButton style="secondary" size="small">
-                                    Add Word
+                                <BaseButton
+                                    style="secondary"
+                                    size="small"
+                                    onClick={() => toggleWordForm()}
+                                >
+                                    {showWordForm ? "Hide form" : "Add Word"}
                                 </BaseButton>
                                 <BaseButton style="ghost" size="small">
                                     Create Quiz
                                 </BaseButton>
                             </SActions>
                         </SMainTop>
-                        {data_words ? (
-                            <SWordsList>
-                                {data_words?.data?.map((item: WordProps) => {
-                                    return (
-                                        <Word
-                                            key={item.id}
-                                            attributes={item.attributes}
-                                        ></Word>
-                                    );
-                                })}
-                            </SWordsList>
-                        ) : null}
+                        {showWordForm && (
+                            <WordForm
+                                type="add"
+                                defaultCategory={categorySelected}
+                                defaultTag={tagSelected}
+                            />
+                        )}
+
+                        <WordList
+                            words={data_words?.data}
+                            isLoading={isLoadingWords}
+                        />
+
                         {pageCount <= 1 ? null : (
                             <SPagination>
                                 <div>Prev</div>
@@ -139,8 +146,6 @@ const SActions = styled.div`
     display: flex;
     gap: ${spacings.offset_10};
 `;
-
-const SWordsList = styled.div``;
 
 const SPagination = styled.div`
     display: flex;

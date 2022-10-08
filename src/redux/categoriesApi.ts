@@ -2,15 +2,18 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
 import { CategoryProps } from "@interfaces";
 
-interface dataCategory {
+interface dataCategories {
     data: CategoryProps[];
 }
+interface dataCategory {
+    data: CategoryProps;
+}
 
-type CategoriesResponse = dataCategory;
+type CategoriesResponse = dataCategories;
 
 export const categoriesApi = createApi({
     reducerPath: "categoriesApi",
-    tagTypes: ["Categories"],
+    tagTypes: ["Words", "Categories", "Tags"],
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/`,
         prepareHeaders: async (headers) => {
@@ -25,7 +28,6 @@ export const categoriesApi = createApi({
         getCategories: build.query<CategoriesResponse, void>({
             query: () => "categories?populate=*",
             providesTags: (result) => {
-                console.log("result", result);
                 return result
                     ? [
                           ...result.data.map(({ id }) => ({
@@ -36,6 +38,9 @@ export const categoriesApi = createApi({
                       ]
                     : [{ type: "Categories", id: "LIST" }];
             },
+        }),
+        getOneCat: build.query<dataCategory, number | string | undefined>({
+            query: (id) => `categories/${id}`,
         }),
         addCategory: build.mutation({
             query: (data) => ({
@@ -57,6 +62,7 @@ export const categoriesApi = createApi({
 
 export const {
     useGetCategoriesQuery,
+    useGetOneCatQuery,
     useAddCategoryMutation,
     useDeleteCategoryMutation,
 } = categoriesApi;

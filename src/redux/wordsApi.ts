@@ -8,9 +8,12 @@ interface dataWord {
 
 type WordsResponse = dataWord;
 
+const q_sort = `sort=createdAt:desc`;
+const q_populate = `&populate=*`;
+
 const q_page = (page: number) => {
     if (page) {
-        return `pagination[page]=${page}&pagination[pageSize]=20`;
+        return `&pagination[page]=${page}&pagination[pageSize]=20`;
     } else {
         return "";
     }
@@ -35,7 +38,7 @@ const query_cat = (category: number | string) =>
 
 export const wordsApi = createApi({
     reducerPath: "wordsApi",
-    tagTypes: ["Words"],
+    tagTypes: ["Words", "Categories", "Tags"],
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/`,
         prepareHeaders: async (headers) => {
@@ -52,7 +55,9 @@ export const wordsApi = createApi({
             { page?: number; tag?: number | string; category?: number | string }
         >({
             query: ({ page = 1, tag = "all", category = "all" }) =>
-                `words?${q_page(page)}${q_tag(tag)}${q_category(category)}`,
+                `words?${q_sort}${q_populate}${q_page(page)}${q_tag(
+                    tag
+                )}${q_category(category)}`,
             providesTags: (result) => {
                 return result
                     ? [
@@ -71,6 +76,19 @@ export const wordsApi = createApi({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: [
+                { type: "Words", id: "LIST" },
+                { type: "Categories", id: "LIST" },
+            ],
+        }),
+        updateWord: build.mutation({
+            query: ({ id, data }) => {
+                return {
+                    url: `words/${id}`,
+                    method: "PUT",
+                    body: data,
+                };
+            },
             invalidatesTags: [{ type: "Words", id: "LIST" }],
         }),
         deleteWord: build.mutation({
@@ -83,5 +101,9 @@ export const wordsApi = createApi({
     }),
 });
 
-export const { useGetWordsQuery, useAddWordMutation, useDeleteWordMutation } =
-    wordsApi;
+export const {
+    useGetWordsQuery,
+    useAddWordMutation,
+    useUpdateWordMutation,
+    useDeleteWordMutation,
+} = wordsApi;

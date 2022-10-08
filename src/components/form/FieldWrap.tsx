@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { FieldError, ErrorOption } from "react-hook-form";
 
 import { ErrorFormField } from "@components/form";
-import { forms } from "@styles/vars";
 
 interface FieldWrapProps {
     error?: FieldError | ErrorOption;
@@ -26,6 +25,7 @@ const FieldWrap: React.FC<FieldWrapProps> = ({ children, error }) => {
 
 const SFieldWrap = styled.div`
     position: relative;
+    width: 100%;
 `;
 
 export default FieldWrap;

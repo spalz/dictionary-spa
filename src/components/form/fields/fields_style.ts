@@ -1,3 +1,4 @@
+import { spacings } from "./../../../styles/spacing_vars";
 import styled from "styled-components";
 
 import { colors, global, forms, fonts } from "@styles/vars";
@@ -64,4 +65,10 @@ export const SLabelStyle = styled.label`
     span {
         color: ${colors?.typo_negative};
     }
+`;
+
+export const SFormRow = styled.div`
+    display: flex;
+    gap: ${spacings.offset_20};
+    width: 100%;
 `;

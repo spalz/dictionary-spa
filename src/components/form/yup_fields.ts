@@ -35,8 +35,10 @@ export const yup_current_password = () =>
         .required("Enter the current password");
 
 //add word
+export const yup_id = () => Yup.string();
 export const yup_word = () => Yup.string().required("Word is requred");
-export const yup_translation = () => Yup.string();
+export const yup_translation = () =>
+    Yup.string().required("Word translation is requred");
 export const yup_example = () => Yup.string();
 export const yup_example_traslation = () => Yup.string();
 

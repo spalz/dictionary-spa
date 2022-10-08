@@ -2,11 +2,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
 import { TagProps } from "@interfaces";
 
-interface dataTag {
+interface dataTags {
     data: TagProps[];
 }
+interface dataTag {
+    data: TagProps;
+}
 
-type TagsResponse = dataTag;
+type TagsResponse = dataTags;
 
 export const tagsApi = createApi({
     reducerPath: "tagsApi",
@@ -23,9 +26,8 @@ export const tagsApi = createApi({
     }),
     endpoints: (build) => ({
         getTags: build.query<TagsResponse, void>({
-            query: () => "tags",
+            query: () => "tags?populate=*",
             providesTags: (result) => {
-                console.log("result", result);
                 return result
                     ? [
                           ...result.data.map(({ id }) => ({
@@ -36,6 +38,9 @@ export const tagsApi = createApi({
                       ]
                     : [{ type: "Tags", id: "LIST" }];
             },
+        }),
+        getOneTag: build.query<dataTag, number | string | undefined>({
+            query: (id) => `tags/${id}`,
         }),
         addTag: build.mutation({
             query: (data) => ({
@@ -55,5 +60,9 @@ export const tagsApi = createApi({
     }),
 });
 
-export const { useGetTagsQuery, useAddTagMutation, useDeleteTagMutation } =
-    tagsApi;
+export const {
+    useGetTagsQuery,
+    useGetOneTagQuery,
+    useAddTagMutation,
+    useDeleteTagMutation,
+} = tagsApi;

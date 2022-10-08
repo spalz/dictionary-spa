@@ -1,7 +1,6 @@
 import React from "react";
 
 import { SuccessForm } from "@components/form";
-import { Wrapper } from "@components/layout";
 
 interface BlockFormProps {
     children: React.ReactNode;
@@ -21,15 +20,13 @@ const BlockForm: React.FC<BlockFormProps> = ({
     return (
         <div>
             {success ? (
-                <Wrapper offset={["top-20"]}>
-                    <SuccessForm
-                        icon={success_icon}
-                        title={success_title}
-                        text={success_text}
-                    />
-                </Wrapper>
+                <SuccessForm
+                    icon={success_icon}
+                    title={success_title}
+                    text={success_text}
+                />
             ) : (
-                <Wrapper offset={["top-10"]}>{children}</Wrapper>
+                children
             )}
         </div>
     );

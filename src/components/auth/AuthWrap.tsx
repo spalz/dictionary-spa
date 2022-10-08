@@ -14,7 +14,7 @@ const AuthWrap: React.FC<AuthWrapProps> = ({ title, children }) => {
         <SAuthWrap>
             <Meta title={title} />
             <div>
-                <Headline level={1} size="large" offset={["bottom-0"]}>
+                <Headline level={1} size="large" offset={["bottom-20"]}>
                     {title}
                 </Headline>
                 {children}

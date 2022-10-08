@@ -2,6 +2,8 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAddCategoryMutation } from "@redux";
+import { TagAttributesProps } from "@interfaces";
 
 // import { DevTool } from "@hookform/devtools";
 
@@ -14,29 +16,29 @@ import {
 } from "@components/form";
 import { yup_string_required } from "@components/form/yup_fields";
 
-type CategoryFormValues = {
-    title: string;
-};
-
 const FormSchema = () =>
     Yup.object().shape({
         title: yup_string_required("Title"),
     });
 
 const CategoryForm = () => {
+    const [addCategory, {}] = useAddCategoryMutation();
+
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid },
-    } = useForm<CategoryFormValues>({
+    } = useForm<TagAttributesProps>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
-    const onSubmit = (data: CategoryFormValues) => {
+    const onSubmit = (data: TagAttributesProps) => {
         console.log(data);
+        addCategory({ data: data }).unwrap();
+        reset();
     };
-
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <BlockForm success={false}>

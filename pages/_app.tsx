@@ -1,5 +1,7 @@
 import type { AppProps } from "next/app";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
+import { Provider } from "react-redux";
+import { store } from "@redux/store";
 
 import {
     FontsVarsStyle,
@@ -25,7 +27,9 @@ function MyApp({
             <FontsStyle />
             <FormVarsStyle />
             <SessionProvider session={session}>
-                <Component {...pageProps} />
+                <Provider store={store}>
+                    <Component {...pageProps} />
+                </Provider>
             </SessionProvider>
         </>
     );

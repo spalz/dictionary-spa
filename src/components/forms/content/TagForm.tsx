@@ -2,6 +2,8 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAddTagMutation } from "@redux";
+import { TagAttributesProps } from "@interfaces";
 
 // import { DevTool } from "@hookform/devtools";
 
@@ -14,27 +16,28 @@ import {
 } from "@components/form";
 import { yup_string_required } from "@components/form/yup_fields";
 
-type TagFormValues = {
-    title: string;
-};
-
 const FormSchema = () =>
     Yup.object().shape({
         title: yup_string_required("Title"),
     });
 
 const TagForm = () => {
+    const [addTag, {}] = useAddTagMutation();
+
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid },
-    } = useForm<TagFormValues>({
+    } = useForm<TagAttributesProps>({
         resolver: yupResolver(FormSchema()),
         mode: "all",
     });
 
-    const onSubmit = (data: TagFormValues) => {
+    const onSubmit = (data: TagAttributesProps) => {
         console.log(data);
+        addTag({ data: data }).unwrap();
+        reset();
     };
 
     return (

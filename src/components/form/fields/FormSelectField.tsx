@@ -24,7 +24,7 @@ interface FormSelectFieldProps {
     id: number;
     options: Array<{
         label: string;
-        value: string;
+        value: number;
     }>;
     loading?: boolean;
     disabled?: boolean;

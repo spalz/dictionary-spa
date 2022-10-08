@@ -90,7 +90,10 @@
                 "@interfaces": "./src/interfaces",
 
                 "@icons/*": "components/elements/icons/*",
-                "@icons": "components/elements/icons"
+                "@icons": "components/elements/icons",
+
+                "@redux/*": "./src/redux/",
+                "@redux": "./src/redux"
             }
         }
     }

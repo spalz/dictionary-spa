@@ -28,7 +28,9 @@
             "@icons/*": ["./src/components/icons/*"],
             "@icons": ["./src/components/icons"],
             "@utils/*": ["./src/utils/*"],
-            "@utils": ["./src/utils"]
+            "@utils": ["./src/utils"],
+            "@redux/*": ["./src/redux/*"],
+            "@redux": ["./src/redux"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

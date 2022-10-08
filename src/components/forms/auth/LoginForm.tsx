@@ -21,11 +21,7 @@ import {
     ProvidersList,
 } from "@components/form";
 import { AuthRegisterEmailR, AuthRecoveryPasswordR } from "@utils/routes";
-import {
-    yup_username,
-    yup_email,
-    yup_password,
-} from "@components/form/yup_fields";
+import { yup_email, yup_password } from "@components/form/yup_fields";
 import { ProviderProps } from "@interfaces/auth";
 
 type LoginFormValues = {
@@ -89,6 +85,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                     defaultValue={csrfToken}
                     name="csrfToken"
                 />
+
+                <ProvidersList providers={providers} compact />
+
                 <BlockForm
                     success={false}
                     success_icon={<IconNight />}
@@ -96,9 +95,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ providers, csrfToken }) => {
                     success_text="Success text"
                 >
                     {authError ? <InfoForm>{authError}</InfoForm> : null}
-
-                    <ProvidersList providers={providers} compact />
-
                     <div>
                         <Controller
                             render={({ field }) => {

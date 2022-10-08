@@ -2,8 +2,11 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSession } from "next-auth/react";
-
+import {
+    useGetTagsQuery,
+    useGetCategoriesQuery,
+    useAddWordMutation,
+} from "@redux";
 // import { DevTool } from "@hookform/devtools";
 
 import { Wrapper } from "@components/layout";
@@ -22,6 +25,11 @@ import {
     yup_word_category,
     yup_word_tags,
 } from "@components/form/yup_fields";
+import {
+    WordAttributesProps,
+    TagProps,
+    CategoryProps,
+} from "@interfaces/index";
 
 type WordFormValues = {
     word: string;
@@ -43,11 +51,14 @@ const FormSchema = () =>
     });
 
 const WordForm = () => {
-    const { data: session } = useSession();
+    const { data: data_tags } = useGetTagsQuery();
+    const { data: data_categories } = useGetCategoriesQuery();
+    const [addWord, {}] = useAddWordMutation();
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors, isValid },
     } = useForm<WordFormValues>({
         resolver: yupResolver(FormSchema()),
@@ -55,8 +66,32 @@ const WordForm = () => {
     });
 
     const onSubmit = (data: WordFormValues) => {
-        console.log(data);
+        addWord({
+            data: {
+                word: data.word,
+                translation: data.translation,
+                example: data.example,
+                example_traslation: data.example_traslation,
+                category: data.category.value,
+                tags: data.tags.map((tag) => tag.value),
+            },
+        }).unwrap();
+        // reset();
     };
+
+    const tags = data_tags?.data?.map((item: TagProps) => {
+        return {
+            label: item.attributes.title,
+            value: item.id,
+        };
+    });
+
+    const categories = data_categories?.data?.map((item: CategoryProps) => {
+        return {
+            label: item.attributes.title,
+            value: item.id,
+        };
+    });
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,71 +157,41 @@ const WordForm = () => {
                         control={control}
                         defaultValue=""
                     />
-                    <Controller
-                        render={({ field }) => {
-                            return (
-                                <FormSelectField
-                                    id={tabindex.word + 5}
-                                    error={errors.category}
-                                    label="Category"
-                                    options={[
-                                        {
-                                            label: "Chocolate",
-                                            value: "chocolate",
-                                        },
-                                        {
-                                            label: "Strawberry",
-                                            value: "strawberry",
-                                        },
-                                        {
-                                            label: "Vanilla",
-                                            value: "vanilla",
-                                        },
-                                    ]}
-                                    {...field}
-                                />
-                            );
-                        }}
-                        name="category"
-                        control={control}
-                    />
-                    <Controller
-                        render={({ field }) => {
-                            return (
-                                <FormSelectField
-                                    id={tabindex.word + 6}
-                                    error={errors.tags}
-                                    label="Tags"
-                                    isMulti
-                                    options={[
-                                        {
-                                            label: "Chocolate",
-                                            value: "chocolate",
-                                        },
-                                        {
-                                            label: "Strawberry",
-                                            value: "strawberry",
-                                        },
-                                        {
-                                            label: "Vanilla",
-                                            value: "vanilla",
-                                        },
-                                        {
-                                            label: "Strawberry2",
-                                            value: "strawberry2",
-                                        },
-                                        {
-                                            label: "Vanilla2",
-                                            value: "vanilla2",
-                                        },
-                                    ]}
-                                    {...field}
-                                />
-                            );
-                        }}
-                        name="tags"
-                        control={control}
-                    />
+                    {categories && (
+                        <Controller
+                            render={({ field }) => {
+                                return (
+                                    <FormSelectField
+                                        id={tabindex.word + 5}
+                                        error={errors.category}
+                                        label="Category"
+                                        options={categories}
+                                        {...field}
+                                    />
+                                );
+                            }}
+                            name="category"
+                            control={control}
+                        />
+                    )}
+                    {tags && (
+                        <Controller
+                            render={({ field }) => {
+                                return (
+                                    <FormSelectField
+                                        id={tabindex.word + 6}
+                                        error={errors.tags}
+                                        label="Tags"
+                                        isMulti
+                                        options={tags}
+                                        {...field}
+                                    />
+                                );
+                            }}
+                            name="tags"
+                            control={control}
+                        />
+                    )}
                 </div>
 
                 <Wrapper offset={["bottom-20"]}>

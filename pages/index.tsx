@@ -29,7 +29,7 @@ const Home: NextPage = () => {
     );
 
     // console.group("next-auth session");
-    // console.log("session:", session);
+    console.log("session:", session);
     // console.log("words:", words);
     // console.log("status:", status);
     console.groupEnd();

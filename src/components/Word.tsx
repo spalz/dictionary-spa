@@ -26,7 +26,7 @@ const Word: React.FC<WordProps> = ({
     const [deleteWord] = useDeleteWordMutation();
     const [edit, setEdit] = useState<boolean>(false);
 
-    const toggleEdit = () => {
+    const toggleEditForm = () => {
         setEdit(!edit);
     };
 
@@ -58,7 +58,7 @@ const Word: React.FC<WordProps> = ({
                     <SActions>
                         <button style={reset_button_style}>
                             <SAction
-                                onClick={() => toggleEdit()}
+                                onClick={() => toggleEditForm()}
                                 className={edit ? "active" : ""}
                             >
                                 <IconEdit />
@@ -82,6 +82,7 @@ const Word: React.FC<WordProps> = ({
                         id,
                         attributes,
                     }}
+                    toggleEditForm={toggleEditForm}
                 />
             ) : null}
         </>

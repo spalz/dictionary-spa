@@ -49,6 +49,7 @@ type WordFormProps = {
     defaultTag?: string | number;
     type: "add" | "edit";
     defaultValues?: WordProps;
+    toggleEditForm?: any;
 };
 
 const FormSchema = () =>
@@ -67,6 +68,7 @@ const WordForm: React.FC<WordFormProps> = ({
     defaultTag,
     type,
     defaultValues,
+    toggleEditForm,
 }) => {
     const { data: data_tags, isLoading: isLoadingTags } = useGetTagsQuery();
     const { data: data_cats, isLoading: isLoadingCat } =
@@ -132,6 +134,7 @@ const WordForm: React.FC<WordFormProps> = ({
                     },
                 },
             }).unwrap();
+            toggleEditForm();
         }
     };
 

@@ -1,20 +1,22 @@
 import type { NextPage } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
     useGetWordsQuery,
     useGetCategoriesQuery,
     useGetTagsQuery,
 } from "@redux";
+import { useSession } from "next-auth/react";
 
-import { BaseButton } from "@components/elements";
+import { Headline, BaseButton } from "@components/elements";
 import { Layout, Container } from "@components/layout";
 import { Categories, Tags, WordList } from "@components";
-import { WordProps } from "@interfaces";
-import { colors, spacings } from "@styles/vars";
+import { colors, spacings, global } from "@styles/vars";
 import { WordForm } from "@components/forms";
 
 const Home: NextPage = () => {
+    const { data: session } = useSession();
+
     const [showWordForm, setShowWordForm] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
     const [pageCount, setPageCount] = useState<number>(1);
@@ -52,75 +54,85 @@ const Home: NextPage = () => {
     return (
         <Layout>
             <Container>
-                <SBlock>
-                    {data_categories ? (
-                        <Categories
-                            onClickCategory={onClickCategory}
-                            categories={data_categories.data}
-                            categorySelected={categorySelected}
-                        />
-                    ) : null}
-
-                    <SMain>
-                        <SMainTop>
-                            <Tags
-                                tags={data_tags?.data}
-                                onClickTag={onClickTag}
-                                tagSelected={tagSelected}
+                {session ? (
+                    <SBlock>
+                        {data_categories ? (
+                            <Categories
+                                onClickCategory={onClickCategory}
+                                categories={data_categories.data}
+                                categorySelected={categorySelected}
                             />
-                            <SActions>
-                                <BaseButton
-                                    style="secondary"
-                                    size="small"
-                                    onClick={() => toggleWordForm()}
-                                >
-                                    {showWordForm ? "Hide form" : "Add Word"}
-                                </BaseButton>
-                                <BaseButton style="ghost" size="small">
-                                    Create Quiz
-                                </BaseButton>
-                            </SActions>
-                        </SMainTop>
-                        {showWordForm && (
-                            <WordForm
-                                type="add"
-                                defaultCategory={categorySelected}
-                                defaultTag={tagSelected}
+                        ) : null}
+
+                        <SMain>
+                            <SMainTop>
+                                <Tags
+                                    tags={data_tags?.data}
+                                    onClickTag={onClickTag}
+                                    tagSelected={tagSelected}
+                                />
+                                <SActions>
+                                    <BaseButton
+                                        style="secondary"
+                                        size="small"
+                                        onClick={() => toggleWordForm()}
+                                    >
+                                        {showWordForm
+                                            ? "Hide form"
+                                            : "Add Word"}
+                                    </BaseButton>
+                                    <BaseButton style="ghost" size="small">
+                                        Create Quiz
+                                    </BaseButton>
+                                </SActions>
+                            </SMainTop>
+                            {showWordForm && (
+                                <WordForm
+                                    type="add"
+                                    defaultCategory={categorySelected}
+                                    defaultTag={tagSelected}
+                                />
+                            )}
+
+                            <WordList
+                                words={data_words?.data}
+                                isLoading={isLoadingWords}
                             />
-                        )}
 
-                        <WordList
-                            words={data_words?.data}
-                            isLoading={isLoadingWords}
-                        />
-
-                        {pageCount <= 1 ? null : (
-                            <SPagination>
-                                <div>Prev</div>
-                                <SPaginationPages>
-                                    {Array(pageCount)
-                                        .fill(0)
-                                        .map((_, index) => (
-                                            <SPage
-                                                key={index + 1}
-                                                className={
-                                                    index + 1 === page
-                                                        ? "active"
-                                                        : ""
-                                                }
-                                                onClick={() => {
-                                                    onClickPage(index + 1);
-                                                }}
-                                            >
-                                                {index + 1}
-                                            </SPage>
-                                        ))}
-                                </SPaginationPages>
-                                <div>Next</div>
-                            </SPagination>
-                        )}
-                    </SMain>
-                </SBlock>
+                            {pageCount <= 1 ? null : (
+                                <SPagination>
+                                    <div>Prev</div>
+                                    <SPaginationPages>
+                                        {Array(pageCount)
+                                            .fill(0)
+                                            .map((_, index) => (
+                                                <SPage
+                                                    key={index + 1}
+                                                    className={
+                                                        index + 1 === page
+                                                            ? "active"
+                                                            : ""
+                                                    }
+                                                    onClick={() => {
+                                                        onClickPage(index + 1);
+                                                    }}
+                                                >
+                                                    {index + 1}
+                                                </SPage>
+                                            ))}
+                                    </SPaginationPages>
+                                    <div>Next</div>
+                                </SPagination>
+                            )}
+                        </SMain>
+                    </SBlock>
+                ) : (
+                    <SBanner>
+                        <Headline level={1} size="huge">
+                            Lexicon life
+                        </Headline>
+                    </SBanner>
+                )}
             </Container>
         </Layout>
     );
@@ -165,6 +177,14 @@ const SPage = styled.li`
         background-color: ${colors?.bg_dark};
         color: ${colors.typo_inverse};
     }
+`;
+
+const SBanner = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: ${global?.header_height};
+    height: calc(100vh - ${global?.header_height});
 `;
 
 export default Home;

@@ -8,6 +8,31 @@ interface dataWord {
 
 type WordsResponse = dataWord;
 
+const q_page = (page: number) => {
+    if (page) {
+        return `pagination[page]=${page}&pagination[pageSize]=20`;
+    } else {
+        return "";
+    }
+};
+const q_tag = (tag: number | string) => {
+    if (tag !== "all") {
+        return `&filters[tags][id][$eq]=${tag}`;
+    } else {
+        return "";
+    }
+};
+const q_category = (category: number | string) => {
+    if (category !== "all") {
+        return `&filters[category][id][$eq]=${category}`;
+    } else {
+        return "";
+    }
+};
+
+const query_cat = (category: number | string) =>
+    `&filters[category][id][$eq]=${category}`;
+
 export const wordsApi = createApi({
     reducerPath: "wordsApi",
     tagTypes: ["Words"],
@@ -22,10 +47,13 @@ export const wordsApi = createApi({
         },
     }),
     endpoints: (build) => ({
-        getWords: build.query<WordsResponse, void>({
-            query: () => "words",
+        getWords: build.query<
+            WordsResponse,
+            { page?: number; tag?: number | string; category?: number | string }
+        >({
+            query: ({ page = 1, tag = "all", category = "all" }) =>
+                `words?${q_page(page)}${q_tag(tag)}${q_category(category)}`,
             providesTags: (result) => {
-                console.log("result", result);
                 return result
                     ? [
                           ...result.data.map(({ id }) => ({

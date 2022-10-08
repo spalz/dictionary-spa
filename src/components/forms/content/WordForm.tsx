@@ -6,6 +6,8 @@ import {
     useGetTagsQuery,
     useGetCategoriesQuery,
     useAddWordMutation,
+    useAddCategoryMutation,
+    useAddTagMutation,
 } from "@redux";
 // import { DevTool } from "@hookform/devtools";
 
@@ -51,9 +53,12 @@ const FormSchema = () =>
     });
 
 const WordForm = () => {
-    const { data: data_tags } = useGetTagsQuery();
-    const { data: data_categories } = useGetCategoriesQuery();
+    const { data: data_tags, isLoading: isLoadingTags } = useGetTagsQuery();
+    const { data: data_cats, isLoading: isLoadingCat } =
+        useGetCategoriesQuery();
     const [addWord, {}] = useAddWordMutation();
+    const [addCategory, {}] = useAddCategoryMutation();
+    const [addTag, {}] = useAddTagMutation();
 
     const {
         control,
@@ -86,12 +91,28 @@ const WordForm = () => {
         };
     });
 
-    const categories = data_categories?.data?.map((item: CategoryProps) => {
+    const categories = data_cats?.data?.map((item: CategoryProps) => {
         return {
             label: item.attributes.title,
             value: item.id,
         };
     });
+
+    const handleCreateCategory = (inputValue: string) => {
+        addCategory({
+            data: {
+                title: inputValue,
+            },
+        }).unwrap();
+    };
+
+    const handleCreateTag = (inputValue: string) => {
+        addTag({
+            data: {
+                title: inputValue,
+            },
+        }).unwrap();
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -157,41 +178,45 @@ const WordForm = () => {
                         control={control}
                         defaultValue=""
                     />
-                    {categories && (
-                        <Controller
-                            render={({ field }) => {
-                                return (
-                                    <FormSelectField
-                                        id={tabindex.word + 5}
-                                        error={errors.category}
-                                        label="Category"
-                                        options={categories}
-                                        {...field}
-                                    />
-                                );
-                            }}
-                            name="category"
-                            control={control}
-                        />
-                    )}
-                    {tags && (
-                        <Controller
-                            render={({ field }) => {
-                                return (
-                                    <FormSelectField
-                                        id={tabindex.word + 6}
-                                        error={errors.tags}
-                                        label="Tags"
-                                        isMulti
-                                        options={tags}
-                                        {...field}
-                                    />
-                                );
-                            }}
-                            name="tags"
-                            control={control}
-                        />
-                    )}
+                    <Controller
+                        render={({ field }) => {
+                            return (
+                                <FormSelectField
+                                    id={tabindex.word + 5}
+                                    error={errors.category}
+                                    label="Category"
+                                    options={categories}
+                                    loading={isLoadingCat}
+                                    noOptionsMessage="No categories"
+                                    isClearable={true}
+                                    onCreateOption={handleCreateCategory}
+                                    {...field}
+                                />
+                            );
+                        }}
+                        name="category"
+                        control={control}
+                    />
+                    <Controller
+                        render={({ field }) => {
+                            return (
+                                <FormSelectField
+                                    id={tabindex.word + 6}
+                                    error={errors.tags}
+                                    label="Tags"
+                                    isMulti={true}
+                                    options={tags}
+                                    loading={isLoadingTags}
+                                    noOptionsMessage="No tags"
+                                    isClearable={true}
+                                    onCreateOption={handleCreateTag}
+                                    {...field}
+                                />
+                            );
+                        }}
+                        name="tags"
+                        control={control}
+                    />
                 </div>
 
                 <Wrapper offset={["bottom-20"]}>

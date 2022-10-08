@@ -23,7 +23,7 @@ export const categoriesApi = createApi({
     }),
     endpoints: (build) => ({
         getCategories: build.query<CategoriesResponse, void>({
-            query: () => "categories",
+            query: () => "categories?populate=*",
             providesTags: (result) => {
                 console.log("result", result);
                 return result

@@ -113,7 +113,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --typo-interactive: #F05644;
         }
         .day, .day_important {
-            --bg-light: #FFFFFF;
+            --bg-light: var(--bg-beige);
             --bg-warning-light: #F5EEDC;
             --bg-danger-light: #ECD7E3;
             --bg-success-light: #EBF3DA;

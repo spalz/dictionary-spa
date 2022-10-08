@@ -1,11 +1,8 @@
 import type { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import {
-    useGetWordsQuery,
-    useGetCategoriesQuery,
-    useGetTagsQuery,
-} from "@redux";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 import { BaseButton } from "@components/elements";
 import { Layout, Container } from "@components/layout";
@@ -16,43 +13,173 @@ import { colors, spacings } from "@styles/vars";
 import Word from "@components/Word";
 
 const Home: NextPage = () => {
+    const { data: session, status } = useSession();
+
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [words, setData] = useState<Array<WordProps>>();
     const [page, setPage] = useState<number>(1);
     const [pageCount, setPageCount] = useState<number>(1);
 
+    const [tags, setTags] = useState<Array<TagProps>>();
     const [tagSelected, setTagsSelected] = useState<number | string>("all");
+
+    const [categories, setCategories] = useState<Array<CategoryProps>>();
     const [categorySelected, setCategorySelected] = useState<number | string>(
         "all"
     );
 
-    const { data: data_words } = useGetWordsQuery({
-        page: page,
-        tag: tagSelected,
-        category: categorySelected,
-    });
-    const { data: data_categories } = useGetCategoriesQuery();
-    const { data: data_tags } = useGetTagsQuery();
+    // console.group("next-auth session");
+    console.log("session:", session);
+    // console.log("words:", words);
+    // console.log("status:", status);
+    console.groupEnd();
 
-    const onClickPage = (num: number) => {
-        setPage(num);
-    };
+    useEffect(() => {
+        const jwt = session?.jwt
+            ? {
+                  headers: {
+                      Authorization: `Bearer ${session?.jwt}`,
+                  },
+              }
+            : null;
+
+        if (session?.jwt) {
+            axios
+                .get(
+                    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/words?pagination[page]=1&pagination[pageSize]=10`,
+                    {
+                        ...jwt,
+                    }
+                )
+                .then((result) => {
+                    setData(result.data.data);
+                    setPage(result.data.meta.pagination.page);
+                    setPageCount(result.data.meta.pagination.pageCount);
+                    setIsLoaded(true);
+                })
+                .catch((error) => console.error(error));
+
+            axios
+                .get(
+                    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/tags?populate=*`,
+                    {
+                        ...jwt,
+                    }
+                )
+                .then((result) => setTags(result.data.data))
+                .catch((error) => console.error(error));
+
+            axios
+                .get(
+                    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/categories?populate=*"`,
+                    {
+                        ...jwt,
+                    }
+                )
+                .then((result) => setCategories(result.data.data))
+                .catch((error) => console.error(error));
+        }
+    }, [session]);
 
     const onClickCategory = (id: number | string) => {
         setCategorySelected(id);
         setTagsSelected("all");
     };
 
+    const onClickPage = (num: number) => {
+        setPage(num);
+    };
+
     const onClickTag = (id: number | string) => {
         setTagsSelected(id);
     };
 
+    useEffect(() => {
+        setIsLoaded(false);
+
+        const jwt = session?.jwt
+            ? {
+                  headers: {
+                      Authorization: `Bearer ${session?.jwt}`,
+                  },
+              }
+            : null;
+
+        const qs = require("qs");
+
+        const main_categories = [
+            {
+                filters:
+                    categorySelected !== "all"
+                        ? {
+                              category: {
+                                  id: {
+                                      $eq: categorySelected,
+                                  },
+                              },
+                          }
+                        : undefined,
+            },
+            {
+                encodeValuesOnly: true,
+            },
+        ];
+        const main_query = [
+            {
+                pagination: {
+                    page: page,
+                    pageSize: 10,
+                },
+                filters:
+                    tagSelected !== "all"
+                        ? {
+                              tags: {
+                                  id: {
+                                      $eq: tagSelected,
+                                  },
+                              },
+                          }
+                        : undefined,
+            },
+            {
+                encodeValuesOnly: true,
+            },
+        ];
+        const main_query_clear = qs.stringify(...main_query);
+        const categories_query_clear = `&${qs.stringify(...main_categories)}`;
+        const link = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/words?${main_query_clear}${categories_query_clear}`;
+        axios
+            .get(link, {
+                ...jwt,
+            })
+            .then((result) => {
+                setData(result.data.data);
+                setPageCount(result.data.meta.pagination.pageCount);
+                setPage(
+                    result.data.meta.pagination.pageCount <= 1
+                        ? 1
+                        : result.data.meta.pagination.page
+                );
+                setIsLoaded(true);
+            })
+            .catch((error) => console.error(error));
+    }, [page, tagSelected, categorySelected]);
+
     return (
         <Layout>
             <Container>
+                {/* {isLoaded ?  <Loader bg={true} type="fixed" />} */}
+                {/* {isLoaded ? "true" : "false"} */}
+
+                <br />
+                <br />
+                <br />
+                <br />
                 <SBlock>
-                    {data_categories ? (
+                    {categories ? (
                         <Categories
                             onClickCategory={onClickCategory}
-                            categories={data_categories.data}
+                            categories={categories}
                             categorySelected={categorySelected}
                         />
                     ) : null}
@@ -61,7 +188,7 @@ const Home: NextPage = () => {
                         <SMainTop>
                             {categorySelected === "all" ? (
                                 <Tags
-                                    tags={data_tags?.data}
+                                    tags={tags}
                                     onClickTag={onClickTag}
                                     tagSelected={tagSelected}
                                 />
@@ -75,9 +202,9 @@ const Home: NextPage = () => {
                                 </BaseButton>
                             </SActions>
                         </SMainTop>
-                        {data_words ? (
+                        {words ? (
                             <SWordsList>
-                                {data_words?.data?.map((item: WordProps) => {
+                                {words?.map((item: WordProps) => {
                                     return (
                                         <Word
                                             key={item.id}

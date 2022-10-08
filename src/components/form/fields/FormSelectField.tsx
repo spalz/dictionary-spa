@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Select, { components, DropdownIndicatorProps } from "react-select";
 import CN from "classnames";
 import { ErrorOption } from "react-hook-form";
+import Select, {
+    components,
+    DropdownIndicatorProps,
+    InputActionMeta,
+    OnChangeValue,
+    ActionMeta,
+} from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 import { IconTop } from "@components/icons/arrows";
 import { BaseFormField, FieldWrap } from "@components/form";
-import { colors, fonts, forms, global } from "@styles/vars";
+import { colors, fonts, forms, global, spacings } from "@styles/vars";
 
 const DropdownIndicator = (props: DropdownIndicatorProps) => {
     return (
@@ -22,7 +29,7 @@ const DropdownIndicator = (props: DropdownIndicatorProps) => {
 
 interface FormSelectFieldProps {
     id: number;
-    options: Array<{
+    options?: Array<{
         label: string;
         value: number;
     }>;
@@ -32,8 +39,12 @@ interface FormSelectFieldProps {
     label?: string;
     required?: boolean;
     value?: any;
+    onChange: (any: any) => void;
     onBlur: ({ target }: { target: EventTarget | null }) => void;
     isMulti?: boolean;
+    noOptionsMessage?: string;
+    onCreateOption?: any;
+    isClearable?: boolean;
 }
 
 const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
@@ -48,6 +59,10 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
             required,
             onBlur,
             value,
+            noOptionsMessage,
+            onCreateOption,
+            isClearable,
+            onChange,
             ...rest
         },
         ref
@@ -75,7 +90,7 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
                             disabled: disabled,
                         })}
                     >
-                        <Select
+                        <CreatableSelect
                             {...rest}
                             tabIndex={id}
                             styles={selectStyles}
@@ -89,7 +104,11 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
                             options={options}
                             placeholder={false}
                             onFocus={onFocus}
+                            onChange={onChange}
                             onBlur={onBlurField}
+                            noOptionsMessage={() => noOptionsMessage}
+                            onCreateOption={onCreateOption}
+                            isClearable={isClearable}
                         />
                     </BaseFormField>
                 </SFormSelectField>
@@ -216,6 +235,7 @@ const SFormSelectField = styled.div`
 `;
 
 export const SDropdownIndicatorStyle = styled.div`
+    padding-left: ${spacings.offset_10};
     padding-right: ${forms?.field_spacing_h} !important;
     transition: all ${global?.transition};
     &.focus {

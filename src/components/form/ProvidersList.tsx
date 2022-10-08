@@ -51,7 +51,7 @@ const Item: React.FC<ProvidersListItemProps> = ({
     );
 };
 
-const SItem = styled.button`
+const SItem = styled.a`
     display: flex;
     align-items: center;
     cursor: pointer;

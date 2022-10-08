@@ -17,7 +17,7 @@ import { WordForm, CategoryForm, TagForm } from "@components/forms";
 import { WordProps, CategoryProps, TagProps } from "@interfaces";
 
 const PrivacyPolicy: NextPage = () => {
-    const { data: data_words } = useGetWordsQuery();
+    const { data: data_words } = useGetWordsQuery({});
     const { data: data_categories } = useGetCategoriesQuery();
     const { data: data_tags } = useGetTagsQuery();
     const [deleteTag, {}] = useDeleteTagMutation();

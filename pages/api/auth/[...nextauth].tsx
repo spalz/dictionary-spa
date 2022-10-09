@@ -3,6 +3,8 @@ import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+const api = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api`;
+
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     const strapi_providers = (id: string | number, name: string) => [
         {
@@ -11,14 +13,14 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             id: id,
             name: name,
             authorization: {
-                url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/connect/${id}`,
+                url: `${api}/connect/${id}`,
                 async request(req: Array<string>) {
                     const tokens = await req;
                     return { tokens };
                 },
             },
             token: {
-                url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback`,
+                url: `${api}/auth/${id}/callback`,
                 async request(context: Array<string>) {
                     const tokens = await context;
                     return { tokens };
@@ -31,10 +33,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                     };
                 }) {
                     const tokens = await context;
+                    console.log(tokens);
                     const profile = await axios.get(
-                        `${
-                            process.env.NEXT_PUBLIC_STRAPI_API_URL
-                        }/api/auth/${id}/callback?access_token=${
+                        `${api}/auth/${id}/callback?access_token=${
                             tokens.tokens.params.access_token
                         }${
                             tokens.tokens.params.access_secret
@@ -83,13 +84,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             },
             async authorize(credentials) {
                 try {
-                    const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local`,
-                        {
-                            identifier: credentials?.identifier,
-                            password: credentials?.password,
-                        }
-                    );
+                    const response = await axios.post(`${api}/auth/local`, {
+                        identifier: credentials?.identifier,
+                        password: credentials?.password,
+                    });
                     const user: any = {
                         jwt: response?.data.jwt,
                         name: response?.data.user.username || "",
@@ -124,7 +122,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             async authorize(credentials) {
                 try {
                     const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local/register`,
+                        `${api}/auth/local/register`,
                         {
                             username: credentials?.username,
                             email: credentials?.email,

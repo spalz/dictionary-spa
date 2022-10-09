@@ -2187,17 +2187,16 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-auth@^4.12.0:
+"next-auth@https://github.com/spalz/next-auth-for-strapi-provider.git":
   version "4.12.0"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.12.0.tgz#03f8624eab6b91ec1b9e333192dc5707d57c3241"
-  integrity sha512-TqNJBsVavN60ZkZmoe/YZ13qODuMeXxGgVkpbf8ukB8S7KPKxm+zZPPY76vtTppbPFl6PqFIxzEhNodB2nDStg==
+  resolved "https://github.com/spalz/next-auth-for-strapi-provider.git#913756b2bf6c596671adbd233351006b3a0b8532"
   dependencies:
     "@babel/runtime" "^7.16.3"
     "@panva/hkdf" "^1.0.1"
     cookie "^0.5.0"
     jose "^4.9.3"
     oauth "^0.9.15"
-    openid-client "^5.1.0"
+    openid-client "https://github.com/spalz/node-openid-client-for-strapi-provider.git"
     preact "^10.6.3"
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
@@ -2324,10 +2323,9 @@ open@^8.4.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-openid-client@^5.1.0:
-  version "5.1.9"
-  resolved "https://registry.yarnpkg.com/openid-client/-/openid-client-5.1.9.tgz#6887e75ad3fa8d0c78d0ed693a5ea107d39b54de"
-  integrity sha512-o/11Xos2fRPpK1zQrPfSIhIusFrAkqGSPwkD0UlUB+CCuRzd7zrrBJwIjgnVv3VUSif9ZGXh2d3GSJNH2Koh5g==
+"openid-client@https://github.com/spalz/node-openid-client-for-strapi-provider.git":
+  version "5.1.10"
+  resolved "https://github.com/spalz/node-openid-client-for-strapi-provider.git#e73071752b168c5cb69fd9c506d3e56498fc4115"
   dependencies:
     jose "^4.1.4"
     lru-cache "^6.0.0"

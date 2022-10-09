@@ -10,7 +10,13 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             type: "oauth",
             id: id,
             name: name,
-            authorization: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/connect/${id}`,
+            authorization: {
+                url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/connect/${id}`,
+                async request(req: Array<string>) {
+                    const tokens = await req;
+                    return { tokens };
+                },
+            },
             token: {
                 url: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback`,
                 async request(context: Array<string>) {
@@ -20,11 +26,21 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             },
             userinfo: {
                 async request(context: {
-                    tokens: { params: { access_token: string } };
+                    tokens: {
+                        params: { access_token: string; access_secret: string };
+                    };
                 }) {
                     const tokens = await context;
                     const profile = await axios.get(
-                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/${id}/callback?access_token=${tokens.tokens.params.access_token}`
+                        `${
+                            process.env.NEXT_PUBLIC_STRAPI_API_URL
+                        }/api/auth/${id}/callback?access_token=${
+                            tokens.tokens.params.access_token
+                        }${
+                            tokens.tokens.params.access_secret
+                                ? `&access_secret=${tokens.tokens.params.access_secret}`
+                                : ""
+                        }`
                     );
                     return await profile.data;
                 },

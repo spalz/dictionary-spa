@@ -34,6 +34,7 @@ const HeaderAssistPanel = () => {
             <SubmitButton
                 size="small"
                 style="ghost_stroke"
+                padding_small={true}
                 onClick={() => onClickChangeTheme()}
             >
                 {classname === "day" ? <IconNight /> : <IconDay />}

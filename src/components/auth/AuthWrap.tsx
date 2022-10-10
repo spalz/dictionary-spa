@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Meta, Headline } from "@components/elements";
-import { global } from "@styles/vars";
+import { global, spacings } from "@styles/vars";
 
 interface AuthWrapProps {
     title: string;
@@ -28,7 +28,10 @@ const SAuthWrap = styled.div`
     align-items: center;
     justify-content: center;
     position: relative;
-    min-height: calc(100vh - ${global?.header_height});
+    padding: 0 ${spacings?.offset_wrapper};
+    min-height: calc(
+        (100vh - ${global?.header_height}) - ${spacings?.offset_20}
+    );
     padding-bottom: ${global?.header_height};
     > div {
         width: 100%;

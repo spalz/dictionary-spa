@@ -69,10 +69,10 @@ const HeaderLogo = () => {
                                 y2="80.922"
                                 gradientUnits="userSpaceOnUse"
                             >
-                                <stop stopColor={colors.bg_beige} />
+                                <stop stopColor={colors.bg_grey_200} />
                                 <stop
                                     offset="1"
-                                    stopColor={colors.bg_beige}
+                                    stopColor={colors.bg_grey_200}
                                     stopOpacity="0"
                                 />
                             </linearGradient>
@@ -84,10 +84,10 @@ const HeaderLogo = () => {
                                 y2="80.922"
                                 gradientUnits="userSpaceOnUse"
                             >
-                                <stop stopColor={colors.bg_beige} />
+                                <stop stopColor={colors.bg_grey_200} />
                                 <stop
                                     offset="1"
-                                    stopColor={colors.bg_beige}
+                                    stopColor={colors.bg_grey_200}
                                     stopOpacity="0"
                                 />
                             </linearGradient>
@@ -113,8 +113,10 @@ const SHeaderLogo = styled.div`
             ${down("md")} {
             }
             ${down("sm")} {
+                width: 120px;
             }
             ${down("xs")} {
+                width: 110px;
             }
         }
         &.active {

@@ -7,6 +7,8 @@ import { FieldError } from "react-hook-form";
 import { BaseFormField, FieldWrap } from "@components/form";
 import { IconEyeOpen, IconEyeClosed } from "@components/icons/forms";
 import { SInputStyle } from "./fields_style";
+import { colors, global, forms } from "@styles/vars";
+import { down } from "@config/breakpoints_vars";
 
 interface FormPasswordFieldProps {
     id: number;
@@ -76,7 +78,7 @@ const FormPasswordField: React.FC<FormPasswordFieldProps> = React.forwardRef(
                     <STogglePassword
                         onClick={togglePasswordShow}
                         className={CN({
-                            active: passwordShow,
+                            active: !passwordShow,
                         })}
                     >
                         {passwordShow ? <IconEyeOpen /> : <IconEyeClosed />}
@@ -90,21 +92,25 @@ const FormPasswordField: React.FC<FormPasswordFieldProps> = React.forwardRef(
 FormPasswordField.displayName = "FormPasswordField";
 
 const STogglePassword = styled.div`
-    ${position("absolute", "50%", "var(--field-spacing-h)", null, null)};
+    ${position("absolute", "50%", forms?.field_spacing_h, null, null)};
     transform: translateY(-50%);
-    color: var(--grey-3);
-    transition: color var(--transition);
+    transition: color ${global?.transition};
     cursor: pointer;
     z-index: 8;
+    color: ${colors?.typo_secondary};
     &:hover {
-        color: var(--grey);
+        color: ${colors?.typo_primary};
     }
     &.active {
-        color: var(--grey);
+        color: ${colors?.typo_interactive};
     }
     svg {
         width: 32px;
         height: 32px;
+        ${down("sm")} {
+            width: 28px;
+            height: 28px;
+        }
     }
 `;
 

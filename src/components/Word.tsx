@@ -55,7 +55,7 @@ const Word: React.FC<WordProps> = ({
                             </STooltip>
                         ) : null}
                     </SExample>
-                    <SActions>
+                    <SActions className={edit ? "active" : ""}>
                         <button style={reset_button_style}>
                             <SAction
                                 onClick={() => toggleEditForm()}
@@ -163,27 +163,29 @@ const SActions = styled.div`
     display: flex;
     gap: ${spacings?.offset_10};
     margin-left: auto;
-`;
-const SAction = styled.div`
-    display: block;
-    padding: 0.5em;
-    cursor: pointer;
-    color: ${colors?.typo_secondary};
     opacity: 0;
     transition: all ${global.transition} ease-in-out;
     ${SBlock}:hover & {
         opacity: 1;
     }
+    &.active {
+        opacity: 1;
+    }
+`;
+const SAction = styled.div`
+    display: block;
+    padding: 0.4em;
+    cursor: pointer;
+    color: ${colors?.typo_secondary};
     &:hover {
         color: ${colors.typo_link};
     }
+    svg {
+        width: 1.2em;
+        height: 1.2em;
+    }
     &.active {
         color: ${colors.typo_negative};
-        opacity: 1;
-    }
-    svg {
-        width: 1em;
-        height: 1em;
     }
 `;
 

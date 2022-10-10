@@ -145,7 +145,7 @@ const ThemeVarsStyle = createGlobalStyle`
             --bg-interactive: #F05644;
             --bg-body: ${colors?.color_beige_night};
             --bg-body-border: ${lighten(0.06, colors?.color_beige_night)};
-            --bg-grey-200: #1C1C1C;
+            --bg-grey-200: #131313;
             //
             --bg-gradient-success: linear-gradient(180deg, var(--black) 0%, rgba(38, 140, 45, 0.2) 100%);
             --bg-gradient-danger: linear-gradient(180deg, var(--black) 0%, rgba(102, 27, 27, 0.2) 100%);

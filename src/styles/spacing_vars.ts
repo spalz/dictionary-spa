@@ -10,6 +10,7 @@ export const spacings = {
     offset_40: "var(--offset-40)",
     offset_20: "var(--offset-20)",
     offset_10: "var(--offset-10)",
+    offset_5: "var(--offset-5)",
 
     spacing_card_large: "var(--spacing-card-large)",
     spacing_card_large_minus: "var(--spacing-card-large-minus)",
@@ -29,6 +30,7 @@ const SpacingVarsStyle = createGlobalStyle`
             --offset-40: 50px;
             --offset-20: 25px;
             --offset-10: 15px;
+            --offset-5: 10px;
         }
         ${down("xl")} {
             --offset-120: 120px;
@@ -36,6 +38,7 @@ const SpacingVarsStyle = createGlobalStyle`
             --offset-40: 40px;
             --offset-20: 20px;
             --offset-10: 15px;
+            --offset-5: 10px;
         }
         ${down("lg")} {
         }
@@ -47,6 +50,7 @@ const SpacingVarsStyle = createGlobalStyle`
             --offset-40: 6.76vw;
             --offset-20: 5.76vw;
             --offset-10: 4.1vw;
+            --offset-5: 3.1vw;
         }
         ${down("es")} {
             --offset-wrapper: 4.76vw;

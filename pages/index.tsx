@@ -52,7 +52,7 @@ const Home: NextPage = () => {
     };
 
     return (
-        <Layout>
+        <Layout title="Your personal dictionary of words">
             <Container>
                 {session ? (
                     <SBlock>
@@ -184,7 +184,7 @@ const SBanner = styled.div`
     align-items: center;
     justify-content: center;
     padding-bottom: ${global?.header_height};
-    height: calc(100vh - ${global?.header_height});
+    height: calc((100vh - ${global?.header_height}) - ${spacings.offset_20});
 `;
 
 export default Home;

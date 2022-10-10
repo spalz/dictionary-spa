@@ -8,10 +8,10 @@ import {
     IconGitHubColor,
     IconTwitterColor,
 } from "@components/icons/auth";
-import { Link } from "@components/elements";
 import { colors, global, spacings, fonts } from "@styles/vars";
 import { signIn } from "next-auth/react";
 import { AuthLoginEmailR } from "@utils/routes";
+import { down } from "@config/breakpoints_vars";
 
 import { ProviderProps } from "@interfaces/auth";
 
@@ -44,7 +44,7 @@ const Item: React.FC<ProvidersListItemProps> = ({
                     <IconGitHubColor />
                 ) : null}
             </SIcon>
-            <STitle>
+            <STitle className={name}>
                 <span>Continue with</span> {name}
             </STitle>
         </SItem>
@@ -62,12 +62,12 @@ const SItem = styled.a`
     margin-bottom: ${spacings.offset_10};
     border-radius: ${global.border_radius};
     transition: all ${global?.transition};
-    padding: 0.5em 0.5em;
-    flex: 1;
+    padding: 0.6em 1em;
+    /* flex: 1; */
     background: none;
     font-family: ${fonts.ff_base};
     font-size: ${fonts?.fs_16};
-    width: 100%;
+    /* width: 100%; */
     &:hover {
         border-color: ${colors?.form_hover_border};
     }
@@ -78,18 +78,33 @@ const SItem = styled.a`
     .compact & {
         justify-content: center;
         margin-bottom: 0;
+        flex: auto;
+    }
+    &.Google,
+    &.Facebook {
+        /* flex: 1; */
     }
 `;
 
 const SIcon = styled.div`
     svg {
         height: 22px;
+        ${down("sm")} {
+            height: 18px;
+        }
     }
 `;
 
 const STitle = styled.div`
     padding-left: 8px;
     .compact & {
+        &.Github,
+        &.Twitter {
+            display: none;
+        }
+        ${down("sm")} {
+            display: none;
+        }
         span {
             display: none;
         }
@@ -143,6 +158,9 @@ const SList = styled.div`
         display: flex;
         justify-content: space-between;
         gap: ${spacings.offset_10};
+        ${down("sm")} {
+            gap: ${spacings.offset_5};
+        }
     }
 `;
 const SOr = styled.div`

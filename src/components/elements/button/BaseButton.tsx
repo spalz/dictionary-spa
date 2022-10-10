@@ -30,6 +30,7 @@ export interface BaseButtonProps {
     children?: React.ReactNode;
     onClick?: () => void;
     tabIndex?: number;
+    padding_small?: boolean;
 }
 
 const BaseButton: React.FC<BaseButtonProps> = ({
@@ -43,6 +44,7 @@ const BaseButton: React.FC<BaseButtonProps> = ({
     onClick,
     block = false,
     tabIndex,
+    padding_small,
 }) => {
     return (
         <SBaseButton
@@ -52,6 +54,7 @@ const BaseButton: React.FC<BaseButtonProps> = ({
                 disabled: disabled,
                 loading: loading,
                 block: block,
+                padding_small: padding_small,
             })}
         >
             <SInfo>
@@ -88,8 +91,13 @@ const SBaseButton = styled.div`
         padding: 0 0.5em;
         font-size: ${fonts?.fs_16};
         font-weight: ${fonts?.fw_regular};
+        &.padding_small {
+        }
         ${down("sm")} {
             padding: 0 1.1em;
+            &.padding_small {
+                padding: 0 0.5em;
+            }
             font-size: ${fonts?.fs_16};
         }
     }

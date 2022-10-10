@@ -32,18 +32,32 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                         params: { access_token: string; access_secret: string };
                     };
                 }) {
-                    const tokens = await context;
-                    console.log(tokens);
-                    const profile = await axios.get(
-                        `${api}/auth/${id}/callback?access_token=${
-                            tokens.tokens.params.access_token
-                        }${
-                            tokens.tokens.params.access_secret
-                                ? `&access_secret=${tokens.tokens.params.access_secret}`
-                                : ""
-                        }`
-                    );
-                    return await profile.data;
+                    const tok = await context.tokens.params;
+                    let userinfo_error = false;
+                    const userinfo = await axios
+                        .get(
+                            `${api}/auth/${id}/callback?access_token=${
+                                tok.access_token
+                            }${
+                                tok.access_secret
+                                    ? `&access_secret=${tok.access_secret}`
+                                    : ""
+                            }`
+                        )
+                        .then((result) => result.data)
+                        .catch(function (error) {
+                            if (error.response) {
+                                userinfo_error = true;
+                                return error;
+                            }
+                        });
+                    if (userinfo_error) {
+                        throw new Error(
+                            JSON.stringify(userinfo.response.data.error.message)
+                        );
+                    } else {
+                        return userinfo;
+                    }
                 },
             },
             profile(profile: {
@@ -66,9 +80,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
     const providers = [
         ...strapi_providers("google", "Google"),
-        ...strapi_providers("twitter", "Twitter"),
-        // ...strapi_providers("github", "Github"),
         ...strapi_providers("facebook", "Facebook"),
+        ...strapi_providers("twitter", "Twitter"),
+        ...strapi_providers("github", "Github"),
         CredentialsProvider({
             id: "login",
             name: "Credentials",
@@ -149,6 +163,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         providers,
         session: {
             strategy: "jwt",
+        },
+        pages: {
+            signIn: "/auth/login",
+            error: "/auth/login",
         },
         secret: process.env.NEXTAUTH_SECRET,
         callbacks: {

@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
 import styled from "styled-components";
+
 import {
     useGetWordsQuery,
     useGetCategoriesQuery,
@@ -8,7 +9,8 @@ import {
 } from "@redux";
 import { useSession } from "next-auth/react";
 
-import { Headline, BaseButton } from "@components/elements";
+import { BaseButton, Image } from "@components/elements";
+import { MainBanner } from "@components/main";
 import { Layout, Container } from "@components/layout";
 import { Categories, Tags, WordList } from "@components";
 import { colors, spacings, global } from "@styles/vars";
@@ -127,11 +129,7 @@ const Home: NextPage = () => {
                         </SMain>
                     </SBlock>
                 ) : (
-                    <SBanner>
-                        <Headline level={1} size="huge">
-                            Lexicon life
-                        </Headline>
-                    </SBanner>
+                    <MainBanner />
                 )}
             </Container>
         </Layout>
@@ -177,14 +175,6 @@ const SPage = styled.li`
         background-color: ${colors?.bg_dark};
         color: ${colors.typo_inverse};
     }
-`;
-
-const SBanner = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: ${global?.header_height};
-    height: calc((100vh - ${global?.header_height}) - ${spacings.offset_20});
 `;
 
 export default Home;

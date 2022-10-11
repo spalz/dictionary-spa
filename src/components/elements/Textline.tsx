@@ -26,15 +26,15 @@ interface TextlineProps {
     children: React.ReactNode;
 }
 
-const Headline: React.FC<TextlineProps> = ({
+const Textline: React.FC<TextlineProps> = ({
     size = "mid",
     offset = ["bottom-0"],
     align = "left",
     children,
 }) => {
-    const headline_size = `size__${size}`;
+    const Textline_size = `size__${size}`;
     const offset_list = offset ? offset.join(" ") : "";
-    const classnames = CN(headline_size, align);
+    const classnames = CN(Textline_size, align);
     return (
         <SOffsetStyle className={offset_list}>
             <STextline className={classnames}>{children}</STextline>
@@ -44,6 +44,16 @@ const Headline: React.FC<TextlineProps> = ({
 
 const STextline = styled.div`
     ${down("sm")} {
+    }
+    &.size__huge {
+        font-size: ${fonts?.fs_24};
+        ${down("xl")} {
+        }
+        ${down("lg")} {
+        }
+        ${down("md")} {
+            font-size: ${fonts?.fs_20};
+        }
     }
     &.center {
         display: block;
@@ -57,4 +67,4 @@ const STextline = styled.div`
     }
 `;
 
-export default Headline;
+export default Textline;

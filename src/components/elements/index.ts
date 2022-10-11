@@ -10,6 +10,4 @@ export { default as Meta } from "./Meta";
 export { default as Headline } from "./Headline";
 export { default as Textline } from "./Textline";
 export { default as Link } from "./Link";
-// export { default as SoacialList } from "./SoacialList";
-// export { default as Avatar } from "./Avatar";
-// export { default as Textline } from "./Textline";
+export { default as Image } from "./Image";

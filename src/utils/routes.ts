@@ -1,7 +1,7 @@
 export const MainR = () => `/`;
 export const FaqR = () => `/faq`;
-export const PagePrivatPoliceR = () => `/privacy-policy/`;
-export const PageAboutR = () => `/about/`;
+export const PagePrivatPoliceR = () => `/privacy-policy`;
+export const PageAboutR = () => `/about`;
 
 // auth
 export const AuthLoginInvalidR = () => `/auth/login-invalid/`;

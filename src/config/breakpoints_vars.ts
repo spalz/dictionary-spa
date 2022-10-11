@@ -1,8 +1,7 @@
-interface arrayProps {
-    [index: string]: number;
-}
+export type BREAKPOINT = "xs" | "es" | "sm" | "md" | "lg" | "xl" | "xga";
+export type BREAKPOINT_DOWN = Exclude<BREAKPOINT, "xga">;
 
-export const grid: arrayProps = {
+export const grid: { [key in BREAKPOINT]: number } = {
     xs: 0,
     es: 362,
     sm: 576,
@@ -12,7 +11,7 @@ export const grid: arrayProps = {
     xga: 1460,
 };
 
-export const grid_down: arrayProps = {
+export const grid_down: { [key in BREAKPOINT_DOWN]: number } = {
     xs: grid.es - 0.02,
     es: grid.sm - 0.02,
     sm: grid.md - 0.02,
@@ -21,7 +20,7 @@ export const grid_down: arrayProps = {
     xl: grid.xga - 0.02,
 };
 
-export const container: arrayProps = {
+export const container: { [key in Exclude<BREAKPOINT, "es">]: number } = {
     xs: 352,
     sm: 540,
     md: 720,
@@ -30,7 +29,8 @@ export const container: arrayProps = {
     xga: 1380,
 };
 
-export const up = (min: string) => `@media (min-width: ${grid[min]}px)`;
-export const down = (max: string) => `@media (max-width: ${grid_down[max]}px)`;
-export const only = (val: string) =>
+export const up = (min: BREAKPOINT) => `@media (min-width: ${grid[min]}px)`;
+export const down = (max: BREAKPOINT_DOWN) =>
+    `@media (max-width: ${grid_down[max]}px)`;
+export const only = (val: BREAKPOINT_DOWN) =>
     `@media (max-width: ${grid_down[val]}px) and (min-width: ${grid[val]}px)`;

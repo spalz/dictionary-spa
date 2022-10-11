@@ -580,6 +580,24 @@
     redux-thunk "^2.4.1"
     reselect "^4.1.5"
 
+"@renditions/get-sizes@^3.1.1":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@renditions/get-sizes/-/get-sizes-3.1.2.tgz#c8d9fc1c812da8733d139b9962557a97907f067c"
+  integrity sha512-6XO4c006yc7TxjftxhHaqyuH2eb3Ssx0aG3iCY6ybrrl//qTglJczlVQOTSclQgjNncleheYAhj3Aj/+59I0jw==
+
+"@renditions/get-srcset@^1.1.2":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@renditions/get-srcset/-/get-srcset-1.1.3.tgz#f05faa0daf564f675ab01595a395def442fde9ae"
+  integrity sha512-6qQKg86ho5mnXbVT+y8A7gymDVokzWnxuKRB6kbknqrnegFaVT1cQXupcUJTEIPewvdCa9F8eZQWJiDNRAJ8Xw==
+
+"@renditions/react-picture-source@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@renditions/react-picture-source/-/react-picture-source-0.2.3.tgz#08f27e864636e5d72bd8050ab1221c6b7ad2d0dd"
+  integrity sha512-Rwkysd1lXVJZCMcPQFq6IFQCiWRvcK6F8qeQib2HJVV9l86O8GXq7oXsp1ZbFmUtj89t1DbSixwHS/tRCBZ92w==
+  dependencies:
+    "@renditions/get-sizes" "^3.1.1"
+    "@renditions/get-srcset" "^1.1.2"
+
 "@rushstack/eslint-patch@^1.1.3":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"

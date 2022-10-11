@@ -68,14 +68,15 @@ const headline_style = css`
         }
     }
     &.size__huge {
-        font-size: ${fonts?.fs_48};
+        font-size: ${fonts?.fs_64};
         ${down("xl")} {
+            font-size: ${fonts?.fs_48};
         }
         ${down("lg")} {
-            font-size: ${fonts?.fs_30};
+            font-size: ${fonts?.fs_48};
         }
         ${down("md")} {
-            font-size: ${fonts?.fs_24};
+            /* font-size: ${fonts?.fs_30}; */
         }
     }
     &.mono {

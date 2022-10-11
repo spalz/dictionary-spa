@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { UrlObject } from "url";
 declare type Url = string | UrlObject;
+import { useSession } from "next-auth/react";
 
 import { Link } from "@components/elements";
 import { colors, spacings } from "@styles/vars";
-import { MainR, FaqR } from "@utils/routes";
+import { MainR, FaqR, PageAboutR } from "@utils/routes";
 
 interface HeaderMenuItemProps {
     title: string;
@@ -30,11 +31,13 @@ const SHeaderMenuItem = styled.li`
 `;
 
 const HeaderMenu = () => {
+    const { data: session } = useSession();
     return (
         <SHeaderMenu>
             <SList>
-                <HeaderMenuItem href={MainR()} title="My words" />
+                {session && <HeaderMenuItem href={MainR()} title="My words" />}
                 <HeaderMenuItem href={FaqR()} title="Faq" />
+                <HeaderMenuItem href={PageAboutR()} title="About" />
             </SList>
         </SHeaderMenu>
     );

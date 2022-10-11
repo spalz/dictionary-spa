@@ -80,7 +80,7 @@ const FormSelectField: React.FC<FormSelectFieldProps> = React.forwardRef(
                     setDefaultVelue(value);
                 }
             }, 20);
-        }, []);
+        }, [loading, value]);
 
         return (
             <FieldWrap error={error}>

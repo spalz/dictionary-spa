@@ -4,7 +4,6 @@ export { default as FormPasswordField } from "./fields/FormPasswordField";
 export { default as FormTextariaField } from "./fields/FormTextariaField";
 export { default as FormInputField } from "./fields/FormInputField";
 export { default as FormSelectField } from "./fields/FormSelectField";
-export { default as FormRadioField } from "./fields/FormRadioField";
 //
 export { default as ErrorFormField } from "./ErrorFormField";
 export { default as FieldWrap } from "./FieldWrap";
